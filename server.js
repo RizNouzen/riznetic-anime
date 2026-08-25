@@ -5,111 +5,110 @@ const cheerio = require('cheerio');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
 app.use(cors());
-app.use(express.json());
+
+// Serve folder 'public' tempat index.html berada
 app.use(express.static(path.join(__dirname, 'public')));
 
-const OTAKUDESU_URL = 'https://otakudesu.cloud';
+// Ganti URL ini kalau domain web target kena internet positif/berubah
+const TARGET_URL = 'https://otakudesu.cloud'; 
 
-const http = axios.create({
-    headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Referer': OTAKUDESU_URL
-    },
-    timeout: 12000
-});
-
-function getSlug(linkStr) {
-    if (!linkStr) return '';
-    return linkStr.replace(OTAKUDESU_URL, '').replace('/anime/', '').replace('/episode/', '').replace(/\//g, '');
-}
-
-app.get('/api/ongoing', async (req, res) => {
+// 1. API: Get Latest Anime
+app.get('/api/home', async (req, res) => {
     try {
-        const response = await http.get(`${OTAKUDESU_URL}/ongoing-anime/page/${req.query.page || 1}/`);
-        const $ = cheerio.load(response.data);
-        const ongoingList = [];
-
-        $('.venz ul li').each((_, el) => {
-            const title = $(el).find('.j2tl').text().trim();
-            const thumb = $(el).find('img').attr('src');
-            const epText = $(el).find('.epz').text().trim();
-            const epMatch = epText.match(/\d+/);
-            const episode = epMatch ? parseInt(epMatch[0]) : 1;
-            const link = $(el).find('.thumb a').attr('href');
-            const slug = getSlug(link);
-
-            if (title && slug) ongoingList.push({ title, thumb, episode, slug, status: 'Ongoing' });
+        const { data } = await axios.get(`${TARGET_URL}/ongoing-anime/`);
+        const $ = cheerio.load(data);
+        let result = [];
+        $('.venz ul li').each((i, el) => {
+            const endpoint = $(el).find('.thumb a').attr('href')?.split('/anime/')[1]?.replace('/', '');
+            if(endpoint) {
+                result.push({
+                    id: endpoint,
+                    title: $(el).find('h2.jdlflm').text().trim(),
+                    cover: $(el).find('img').attr('src'),
+                    episodes: $(el).find('.epz').text().trim() || 'Ongoing',
+                    score: 'N/A' // Web lokal jarang naruh skor di home
+                });
+            }
         });
-
-        res.json({ status: true, data: ongoingList });
-    } catch (err) {
-        res.status(500).json({ status: false });
+        res.json(result);
+    } catch (error) {
+        console.error("Home Error:", error.message);
+        res.status(500).json([]);
     }
 });
 
+// 2. API: Search Anime
 app.get('/api/search', async (req, res) => {
+    const q = req.query.q;
+    if(!q) return res.json([]);
     try {
-        const query = req.query.q;
-        if (!query) return res.status(400).json({ status: false });
-        const response = await http.get(`${OTAKUDESU_URL}/?s=${encodeURIComponent(query)}&post_type=anime`);
-        const $ = cheerio.load(response.data);
-        const searchResults = [];
-
-        $('.chlist li, .ulist li').each((_, el) => {
-            const title = $(el).find('a').text().trim();
-            const link = $(el).find('a').attr('href');
-            const thumb = $(el).find('img').attr('src') || 'https://via.placeholder.com/300x400';
-            const slug = getSlug(link);
-            if (title && slug) searchResults.push({ title, thumb, slug, status: 'Sub Indo' });
+        const { data } = await axios.get(`${TARGET_URL}/?s=${q}&post_type=anime`);
+        const $ = cheerio.load(data);
+        let result = [];
+        $('ul.chivsrc li').each((i, el) => {
+            const endpoint = $(el).find('h2 a').attr('href')?.split('/anime/')[1]?.replace('/', '');
+            if(endpoint) {
+                result.push({
+                    id: endpoint,
+                    title: $(el).find('h2 a').text().trim(),
+                    cover: $(el).find('img').attr('src'),
+                    genres: $(el).find('.set:contains("Genres")').text().replace('Genres : ', '').trim(),
+                    score: 'N/A'
+                });
+            }
         });
-
-        res.json({ status: true, data: searchResults });
-    } catch (err) {
-        res.status(500).json({ status: false });
+        res.json(result);
+    } catch (error) {
+        res.status(500).json([]);
     }
 });
 
-app.get('/api/anime/:slug', async (req, res) => {
+// 3. API: Detail & List Episode
+app.get('/api/anime/:id', async (req, res) => {
     try {
-        const response = await http.get(`${OTAKUDESU_URL}/anime/${req.params.slug}/`);
-        const $ = cheerio.load(response.data);
-        const title = $('.fotoanime h1').text().trim();
-        const thumb = $('.fotoanime img').attr('src');
-        const episodes = [];
-
-        $('.eplister ul li').each((_, el) => {
-            const epTitle = $(el).find('a').text().trim();
+        const { data } = await axios.get(`${TARGET_URL}/anime/${req.params.id}/`);
+        const $ = cheerio.load(data);
+        
+        let episodes = [];
+        $('.episodelist ul li').each((i, el) => {
             const epLink = $(el).find('a').attr('href');
-            const epSlug = getSlug(epLink);
-            const epNumMatch = epTitle.match(/\d+/);
-            const episode = epNumMatch ? parseInt(epNumMatch[0]) : 1;
-            if (epSlug) episodes.push({ title: epTitle, slug: epSlug, episode });
+            const epId = epLink?.split('/episode/')[1]?.replace('/', '');
+            const epTitle = $(el).find('a').text().trim();
+            if(epId) episodes.push({ id: epId, title: epTitle });
         });
 
-        res.json({ status: true, data: { title, thumb, episodes: episodes.reverse() } });
-    } catch (err) {
-        res.status(500).json({ status: false });
+        res.json({
+            id: req.params.id,
+            title: $('.infozingle p:contains("Judul")').text().replace('Judul: ', '').trim(),
+            cover: $('.fotoanime img').attr('src'),
+            synopsis: $('.sinopc').text().trim() || 'Sinopsis tidak tersedia.',
+            status: $('.infozingle p:contains("Status")').text().replace('Status: ', '').trim(),
+            score: $('.infozingle p:contains("Skor")').text().replace('Skor: ', '').trim() || 'N/A',
+            genres: $('.infozingle p:contains("Genre")').text().replace('Genre: ', '').trim(),
+            episodes: episodes // Array format
+        });
+    } catch (error) {
+        res.status(500).json(null);
     }
 });
 
-app.get('/api/episode/:epSlug', async (req, res) => {
+// 4. API: Get Video Iframe URL
+app.get('/api/watch/:epId', async (req, res) => {
     try {
-        const response = await http.get(`${OTAKUDESU_URL}/episode/${req.params.epSlug}/`);
-        const $ = cheerio.load(response.data);
-        let iframeUrl = $('#stream1 iframe').attr('src') || $('.responsive-embed-stream iframe').attr('src');
-
-        if (iframeUrl && iframeUrl.startsWith('//')) iframeUrl = 'https:' + iframeUrl;
-        res.json({ status: true, data: { streamUrl: iframeUrl } });
-    } catch (err) {
-        res.status(500).json({ status: false });
+        const { data } = await axios.get(`${TARGET_URL}/episode/${req.params.epId}/`);
+        const $ = cheerio.load(data);
+        
+        // Cari elemen iframe streaming di dalam web
+        let iframeSrc = $('#lightsVideo iframe').attr('src') || $('.responsive-embed-stream iframe').attr('src');
+        
+        res.json({ streamUrl: iframeSrc || '' });
+    } catch (error) {
+        res.status(500).json({ streamUrl: '' });
     }
 });
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Riznetic Engine (Scraper) running on http://localhost:${PORT}`);
 });
-
-app.listen(PORT, () => console.log(`Server Live Port ${PORT}`));
