@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIZNETIC Sub Indo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { navy: { 950: '#030610', 900: '#080d1a', 800: '#101726' }, accent: { cyan: '#00f2fe' } } } } }
+    </script>
+    <style>
+        body { background-color: #030610; color: #f3f4f6; }
+        .hero-gradient { background: linear-gradient(90deg, #030610 30%, rgba(3, 6, 16, 0.85) 60%, rgba(3, 6, 16, 0.3) 100%); }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row h-screen overflow-hidden">
+    <aside class="fixed bottom-0 left-0 right-0 md:relative h-14 md:h-screen w-full md:w-16 bg-navy-900 border-t md:border-r border-navy-800 flex flex-row md:flex-col items-center justify-around py-1.5 z-50">
+        <a href="#" onclick="showPage('home')" class="font-extrabold text-accent-cyan">RIZ</a>
+        <button onclick="showPage('home')" class="text-accent-cyan p-2"><i class="fa-solid fa-house"></i></button>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto pb-20 p-4 md:p-6" id="main-container">
+        <header class="flex justify-between items-center mb-6">
+            <h1 class="text-lg font-black text-white">RIZ<span class="text-accent-cyan">NETIC Sub Indo</span></h1>
+            <form onsubmit="submitSearch(event)" class="relative w-44 sm:w-64">
+                <input type="text" id="header-search-input" placeholder="Cari anime..." class="w-full bg-navy-950 border border-navy-800 rounded-full py-1.5 pl-4 pr-10 text-xs text-white">
+                <button type="submit" class="absolute right-1 top-1/2 -translate-y-1/2 text-[10px] bg-accent-cyan text-black px-2.5 py-1 rounded-full font-bold">Cari</button>
+            </form>
+        </header>
+
+        <div id="view-home" class="space-y-6">
+            <section id="hero-section" class="relative rounded-2xl overflow-hidden min-h-[260px] flex items-end border border-navy-800 bg-navy-900">
+                <div id="hero-bg" class="absolute inset-0 bg-cover bg-center"></div>
+                <div class="absolute inset-0 hero-gradient"></div>
+                <div class="relative z-10 p-5 space-y-2">
+                    <h2 id="hero-title" class="text-2xl font-extrabold text-white">Loading...</h2>
+                    <button id="hero-play-btn" class="bg-accent-cyan text-black font-bold px-4 py-2 rounded-xl text-xs">Nonton Sekarang</button>
+                </div>
+            </section>
+            <section>
+                <h3 class="text-base font-bold text-white mb-3">Episode Terbaru Sub Indo</h3>
+                <div id="grid-latest" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3"></div>
+            </section>
+        </div>
+
+        <div id="view-watch" class="space-y-4 hidden">
+            <button onclick="goBack()" class="text-xs font-bold text-gray-300 bg-navy-800 px-3 py-1.5 rounded-xl"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+            <h2 id="watch-anime-title" class="text-sm font-bold text-white">Loading...</h2>
+            <div class="aspect-video w-full bg-black rounded-2xl overflow-hidden border border-navy-800">
+                <iframe id="watch-iframe" src="" class="w-full h-full border-0" allowfullscreen></iframe>
+            </div>
+            <div class="p-4 bg-navy-900 rounded-2xl border border-navy-800">
+                <h4 class="text-xs font-bold text-white mb-2">Pilih Episode</h4>
+                <div id="watch-episodes-grid" class="grid grid-cols-4 sm:grid-cols-8 gap-2"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let currentDetail = null;
+        document.addEventListener('DOMContentLoaded', () => {
+            history.replaceState({ page: 'home' }, '', '#home');
+            window.addEventListener('popstate', (e) => {
+                if (e.state && e.state.page === 'watch') loadDetail(e.state.slug, e.state.ep, false);
+                else showPage('home', false);
+            });
+            loadHome();
+        });
+
+        function showPage(page, push = true) {
+            if (push) history.pushState({ page }, '', '#' + page);
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-watch').classList.add('hidden');
+            if (page === 'home') document.getElementById('view-home').classList.remove('hidden');
+        }
+
+        async function loadHome() {
+            const res = await fetch('/api/ongoing');
+            const json = await res.json();
+            if (json.status && json.data.length > 0) {
+                document.getElementById('hero-bg').style.backgroundImage = `url('${json.data[0].thumb}')`;
+                document.getElementById('hero-title').innerText = json.data[0].title;
+                document.getElementById('hero-play-btn').onclick = () => loadDetail(json.data[0].slug, json.data[0].episode);
+                
+                document.getElementById('grid-latest').innerHTML = json.data.map(a => `
+                    <div onclick="loadDetail('${a.slug}', ${a.episode})" class="cursor-pointer bg-navy-900 rounded-xl overflow-hidden border border-navy-800">
+                        <img src="${a.thumb}" class="aspect-[3/4] w-full object-cover">
+                        <div class="p-2"><h4 class="text-xs font-bold text-white line-clamp-2">${a.title}</h4></div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function loadDetail(slug, targetEp, push = true) {
+            if (push) history.pushState({ page: 'watch', slug, ep: targetEp }, '', '#watch-' + slug);
+            showPage('watch', false);
+            document.getElementById('view-watch').classList.remove('hidden');
+
+            const res = await fetch(`/api/anime/${slug}`);
+            const json = await res.json();
+            if (json.status) {
+                currentDetail = json.data;
+                let target = targetEp ? json.data.episodes.find(e => e.episode === targetEp) : json.data.episodes[json.data.episodes.length - 1];
+                if (!target) target = json.data.episodes[json.data.episodes.length - 1];
+
+                document.getElementById('watch-episodes-grid').innerHTML = json.data.episodes.map(e => `
+                    <button onclick="playEp('${e.slug}', ${e.episode}, '${json.data.title}')" class="bg-navy-800 text-white font-bold py-1 text-xs rounded-lg">${e.episode}</button>
+                `).join('');
+
+                if (target) playEp(target.slug, target.episode, json.data.title);
+            }
+        }
+
+        async function playEp(slug, ep, title) {
+            document.getElementById('watch-anime-title').innerText = `${title} - Episode ${ep} Sub Indo`;
+            const res = await fetch(`/api/episode/${slug}`);
+            const json = await res.json();
+            if (json.status) document.getElementById('watch-iframe').src = json.data.streamUrl;
+        }
+
+        function goBack() { window.history.back(); }
+
+        async function submitSearch(e) {
+            if (e) e.preventDefault();
+            const q = document.getElementById('header-search-input').value.trim();
+            if (!q) return;
+            const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+            const json = await res.json();
+            if (json.status) document.getElementById('grid-latest').innerHTML = json.data.map(a => `
+                <div onclick="loadDetail('${a.slug}', 1)" class="cursor-pointer bg-navy-900 rounded-xl overflow-hidden border border-navy-800">
+                    <img src="${a.thumb}" class="aspect-[3/4] w-full object-cover">
+                    <div class="p-2"><h4 class="text-xs font-bold text-white line-clamp-2">${a.title}</h4></div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
