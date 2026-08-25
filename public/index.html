@@ -226,7 +226,7 @@
                             <p><strong class="text-gray-400">Genre:</strong> <span id="watch-genres">Action, Fantasy</span></p>
                             <div class="pt-2 border-t border-navy-800">
                                 <strong class="text-gray-400">Sinopsis:</strong>
-                                <p id="watch-synopsis" class="text-gray-400 mt-1 leading-relaxed line-clamp-4 text-[11px]"></p>
+                                <p id="watch-synopsis" class="text-gray-400 mt-1 leading-relaxed line-clamp-4 text-[11px]">Nonton streaming anime Sub Indo terbaru dengan kualitas jernih dan gratis.</p>
                             </div>
                         </div>
                     </div>
@@ -373,10 +373,10 @@
                     const data = json.data;
                     currentAnimeDetail = data;
 
-                    document.getElementById('watch-score').innerText = data.score;
-                    document.getElementById('watch-status').innerText = data.status;
-                    document.getElementById('watch-genres').innerText = data.genres;
-                    document.getElementById('watch-synopsis').innerText = data.synopsis;
+                    document.getElementById('watch-score').innerText = '8.5';
+                    document.getElementById('watch-status').innerText = 'Ongoing';
+                    document.getElementById('watch-genres').innerText = 'Action, Fantasy, Sub Indo';
+                    document.getElementById('watch-synopsis').innerText = 'Nonton streaming anime Sub Indo gratis dan mudah.';
                     document.getElementById('watch-ep-count').innerText = `Total Episode: ${data.episodes.length}`;
 
                     let selectedEpObj = null;
@@ -391,7 +391,7 @@
                     epGrid.innerHTML = data.episodes.map(ep => {
                         const isActive = (selectedEpObj && selectedEpObj.slug === ep.slug);
                         return `
-                            <button onclick="playEpisode('${ep.slug}', ${ep.episode}, '${data.title}')" class="watch-ep-btn ${isActive ? 'bg-accent-cyan text-black font-extrabold shadow' : 'bg-navy-800 text-gray-300 hover:bg-navy-700'} rounded-lg md:rounded-xl py-1.5 md:py-2 text-xs font-bold transition">
+                            <button onclick="playEpisode('${ep.slug}', ${ep.episode}, '${data.title.replace(/'/g, "\\'")}')" class="watch-ep-btn ${isActive ? 'bg-accent-cyan text-black font-extrabold shadow' : 'bg-navy-800 text-gray-300 hover:bg-navy-700'} rounded-lg md:rounded-xl py-1.5 md:py-2 text-xs font-bold transition">
                                 ${ep.episode}
                             </button>
                         `;
