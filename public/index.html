@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RIZNETIC v8.0 - Perfect Mobile History & Multi-Stream Engine</title>
+    <title>RIZNETIC Sub Indo - Fast Streaming Anime</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -55,9 +55,8 @@
 </head>
 <body class="flex flex-col md:flex-row h-screen overflow-hidden selection:bg-accent-cyan selection:text-black">
 
-    <!-- COMPACT SIDEBAR: ULTRA SLIM ON LAPTOP (w-16 / 64px), BOTTOM NAV ON MOBILE -->
+    <!-- COMPACT SIDEBAR -->
     <aside class="fixed bottom-0 left-0 right-0 md:relative h-14 md:h-screen w-full md:w-16 bg-navy-900 border-t md:border-t-0 md:border-r border-navy-800/80 flex flex-row md:flex-col items-center justify-around md:justify-between py-1.5 md:py-4 z-50 shrink-0 shadow-2xl">
-        <!-- Compact Logo (Desktop) -->
         <a href="#" onclick="showPage('home')" class="hidden md:flex flex-col items-center group">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-accent-cyan to-blue-600 flex items-center justify-center font-extrabold text-black text-sm shadow glow-effect">
                 R
@@ -65,38 +64,24 @@
             <span class="text-[9px] font-bold tracking-wider text-accent-cyan mt-1 group-hover:text-white transition">RIZ</span>
         </a>
 
-        <!-- COMPACT NAV BUTTONS -->
         <nav class="flex flex-row md:flex-col gap-1 md:gap-4 items-center justify-around w-full md:w-auto">
             <button onclick="showPage('home')" id="nav-home" class="nav-btn text-accent-cyan transition p-2 md:p-2.5 rounded-xl relative group flex flex-col items-center">
                 <i class="fa-solid fa-house text-base md:text-lg"></i>
                 <span class="text-[8px] md:hidden mt-0.5 font-medium">Beranda</span>
-                <span class="hidden md:block absolute left-full ml-3 px-2 py-1 bg-navy-800 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Beranda</span>
-            </button>
-            <button onclick="showPage('genre')" id="nav-genre" class="nav-btn text-gray-400 hover:text-accent-cyan transition p-2 md:p-2.5 rounded-xl relative group flex flex-col items-center">
-                <i class="fa-solid fa-tags text-base md:text-lg"></i>
-                <span class="text-[8px] md:hidden mt-0.5 font-medium">Genre</span>
-                <span class="hidden md:block absolute left-full ml-3 px-2 py-1 bg-navy-800 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Genre</span>
-            </button>
-            <button onclick="showPage('popular')" id="nav-popular" class="nav-btn text-gray-400 hover:text-accent-cyan transition p-2 md:p-2.5 rounded-xl relative group flex flex-col items-center">
-                <i class="fa-solid fa-fire text-base md:text-lg"></i>
-                <span class="text-[8px] md:hidden mt-0.5 font-medium">Populer</span>
-                <span class="hidden md:block absolute left-full ml-3 px-2 py-1 bg-navy-800 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Populer</span>
             </button>
             <button onclick="showPage('latest')" id="nav-latest" class="nav-btn text-gray-400 hover:text-accent-cyan transition p-2 md:p-2.5 rounded-xl relative group flex flex-col items-center">
                 <i class="fa-solid fa-bolt text-base md:text-lg"></i>
                 <span class="text-[8px] md:hidden mt-0.5 font-medium">Terbaru</span>
-                <span class="hidden md:block absolute left-full ml-3 px-2 py-1 bg-navy-800 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Terbaru</span>
             </button>
             <button onclick="showPage('bookmarks')" id="nav-bookmarks" class="nav-btn text-gray-400 hover:text-accent-cyan transition p-2 md:p-2.5 rounded-xl relative group flex flex-col items-center">
                 <i class="fa-solid fa-bookmark text-base md:text-lg"></i>
                 <span class="text-[8px] md:hidden mt-0.5 font-medium">Favorit</span>
-                <span class="hidden md:block absolute left-full ml-3 px-2 py-1 bg-navy-800 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Favorit</span>
             </button>
         </nav>
 
         <div class="hidden md:flex flex-col gap-2 items-center">
-            <button onclick="showRandomAnime()" class="text-gray-400 hover:text-accent-cyan transition p-2 rounded-xl group relative" title="Acak Anime">
-                <i class="fa-solid fa-shuffle text-base"></i>
+            <button onclick="loadOngoingHome()" class="text-gray-400 hover:text-accent-cyan transition p-2 rounded-xl">
+                <i class="fa-solid fa-rotate-right text-base"></i>
             </button>
         </div>
     </aside>
@@ -109,13 +94,13 @@
             <div class="flex items-center gap-3 cursor-pointer" onclick="showPage('home')">
                 <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-accent-cyan to-blue-600 flex md:hidden items-center justify-center font-extrabold text-black text-xs shadow glow-effect">R</div>
                 <h1 class="text-lg md:text-xl font-black tracking-wider text-white">RIZ<span class="text-accent-cyan">NETIC</span></h1>
-                <span class="text-[10px] bg-accent-cyan/10 text-accent-cyan px-2 py-0.5 rounded-full border border-accent-cyan/20 font-bold hidden lg:inline-block">v8.0 Fixed Mobile & Stream</span>
+                <span class="text-[10px] bg-accent-cyan/10 text-accent-cyan px-2 py-0.5 rounded-full border border-accent-cyan/20 font-bold hidden lg:inline-block">v9.0 Sub Indo Native</span>
             </div>
 
             <!-- SEARCH FORM -->
             <form onsubmit="submitSearch(event)" class="relative w-44 sm:w-64 md:w-96">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs md:text-sm"></i>
-                <input type="text" id="header-search-input" placeholder="Cari anime..." 
+                <input type="text" id="header-search-input" placeholder="Cari anime sub indo..." 
                     class="w-full bg-navy-950/90 border border-navy-700/80 rounded-full py-1.5 md:py-2 pl-8 md:pl-10 pr-12 md:pr-16 text-xs md:text-sm text-white placeholder-gray-400 focus:outline-none focus:border-accent-cyan transition shadow-inner">
                 <button type="submit" class="absolute right-1 top-1/2 -translate-y-1/2 text-[10px] md:text-xs bg-accent-cyan text-black px-2.5 md:px-3.5 py-1 rounded-full font-extrabold hover:bg-white transition">Cari</button>
             </form>
@@ -126,28 +111,25 @@
             <!-- Loading -->
             <div id="loading-spinner" class="flex flex-col items-center justify-center min-h-[50vh]">
                 <div class="w-10 h-10 border-4 border-accent-cyan border-t-transparent rounded-full animate-spin"></div>
-                <p class="mt-3 text-xs md:text-sm font-medium text-gray-400">Menghubungkan ke AniList Database & Auto Stream Engine...</p>
+                <p class="mt-3 text-xs md:text-sm font-medium text-gray-400">Memuat Streaming Sub Indo...</p>
             </div>
 
             <!-- 1. HOME VIEW -->
             <div id="view-home" class="space-y-6 md:space-y-8 hidden">
-                <!-- HERO CAROUSEL BANNER -->
-                <section id="hero-section" class="relative rounded-2xl md:rounded-3xl overflow-hidden min-h-[340px] md:min-h-[440px] flex items-end border border-navy-800 shadow-2xl bg-navy-900 group">
+                <!-- HERO BANNER -->
+                <section id="hero-section" class="relative rounded-2xl md:rounded-3xl overflow-hidden min-h-[300px] md:min-h-[380px] flex items-end border border-navy-800 shadow-2xl bg-navy-900 group">
                     <div id="hero-bg" class="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out scale-105"></div>
                     <div class="absolute inset-0 hero-gradient"></div>
                     
                     <div class="relative z-10 p-5 md:p-10 max-w-2xl space-y-3">
                         <div class="flex items-center gap-2.5">
-                            <span class="bg-red-600 text-white text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-widest">SPOTLIGHT</span>
-                            <span id="hero-score" class="text-yellow-400 text-xs md:text-sm font-bold flex items-center gap-1">
-                                <i class="fa-solid fa-star text-[10px]"></i> 8.9/10
-                            </span>
+                            <span class="bg-red-600 text-white text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-widest">SUB INDO SPOTLIGHT</span>
                             <span id="hero-status" class="text-[10px] md:text-xs text-gray-300 bg-navy-800/80 px-2 py-0.5 rounded border border-navy-700">Ongoing</span>
                         </div>
 
-                        <h2 id="hero-title" class="text-2xl md:text-4xl font-extrabold text-white leading-tight drop-shadow-md">Anime Title Loading...</h2>
+                        <h2 id="hero-title" class="text-2xl md:text-4xl font-extrabold text-white leading-tight drop-shadow-md">Loading Anime...</h2>
                         <p id="hero-synopsis" class="text-gray-300 text-xs md:text-sm line-clamp-2 md:line-clamp-3 leading-relaxed drop-shadow">
-                            Loading synopsis for spotlight anime...
+                            Selamat datang di RIZNETIC Streaming Anime Sub Indo lancar tanpa ribet!
                         </p>
 
                         <div class="flex items-center gap-3 pt-1">
@@ -156,12 +138,6 @@
                             </button>
                         </div>
                     </div>
-
-                    <div class="absolute bottom-4 right-4 md:bottom-6 md:right-8 z-20 flex items-center gap-2">
-                        <button onclick="prevHeroSlide()" class="w-8 h-8 rounded-full glass hover:bg-white/20 text-white flex items-center justify-center transition text-xs"><i class="fa-solid fa-chevron-left"></i></button>
-                        <div id="hero-dots" class="flex gap-1.5"></div>
-                        <button onclick="nextHeroSlide()" class="w-8 h-8 rounded-full glass hover:bg-white/20 text-white flex items-center justify-center transition text-xs"><i class="fa-solid fa-chevron-right"></i></button>
-                    </div>
                 </section>
 
                 <!-- LATEST SECTION -->
@@ -169,70 +145,28 @@
                     <div class="flex justify-between items-center mb-3 md:mb-4">
                         <div class="flex items-center gap-2">
                             <div class="w-2 h-5 bg-accent-cyan rounded-full"></div>
-                            <h3 class="text-base md:text-lg font-bold text-white tracking-wide">Rilis Terbaru & Episode Baru</h3>
+                            <h3 class="text-base md:text-lg font-bold text-white tracking-wide">Rilis Episode Terbaru (Sub Indo)</h3>
                         </div>
-                        <button onclick="showPage('latest')" class="text-xs text-accent-cyan hover:underline font-semibold flex items-center gap-1">
-                            Lihat Semua <i class="fa-solid fa-chevron-right text-[9px]"></i>
-                        </button>
                     </div>
                     <div id="grid-latest" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"></div>
                 </section>
-
-                <!-- POPULAR SECTION -->
-                <section>
-                    <div class="flex justify-between items-center mb-3 md:mb-4">
-                        <div class="flex items-center gap-2">
-                            <div class="w-2 h-5 bg-blue-500 rounded-full"></div>
-                            <h3 class="text-base md:text-lg font-bold text-white tracking-wide">Trending & Populer</h3>
-                        </div>
-                        <button onclick="showPage('popular')" class="text-xs text-accent-cyan hover:underline font-semibold flex items-center gap-1">
-                            Lihat Semua <i class="fa-solid fa-chevron-right text-[9px]"></i>
-                        </button>
-                    </div>
-                    <div id="grid-popular" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"></div>
-                </section>
             </div>
 
-            <!-- 2. GENRE VIEW -->
-            <div id="view-genre" class="space-y-5 hidden animate-fade-in">
-                <div class="border-b border-navy-800 pb-3">
-                    <h2 class="text-lg md:text-xl font-bold text-white">Filter Genre Anime</h2>
-                    <p class="text-xs text-gray-400 mt-0.5">Pilih kategori genre untuk mencari anime di AniList Database</p>
-                </div>
-                <div id="genre-buttons-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-2.5"></div>
-                
-                <div class="pt-4 border-t border-navy-800 space-y-3">
-                    <h3 id="genre-title-display" class="text-base md:text-lg font-bold text-accent-cyan">Genre: Action</h3>
-                    <div id="genre-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"></div>
-                </div>
-            </div>
-
-            <!-- 3. GRID VIEW -->
+            <!-- 2. GRID VIEW -->
             <div id="view-grid" class="space-y-5 hidden animate-fade-in">
                 <div class="flex justify-between items-center border-b border-navy-800 pb-3">
-                    <h2 id="grid-page-title" class="text-lg md:text-xl font-bold text-white">Daftar Anime</h2>
-                    <span id="grid-page-count" class="text-xs text-gray-400">Menampilkan hasil...</span>
+                    <h2 id="grid-page-title" class="text-lg md:text-xl font-bold text-white">Daftar Anime Sub Indo</h2>
                 </div>
                 <div id="grid-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"></div>
-                
-                <div id="pagination-box" class="flex justify-center items-center gap-3 pt-6 border-t border-navy-800/60 hidden">
-                    <button id="btn-prev-page" onclick="changePage(-1)" class="bg-navy-800 hover:bg-navy-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition border border-navy-700 flex items-center gap-1.5">
-                        <i class="fa-solid fa-chevron-left"></i> Sebelum
-                    </button>
-                    <span id="page-number-indicator" class="text-xs font-bold bg-navy-900 px-3 py-2 rounded-xl border border-accent-cyan/30 text-accent-cyan">Halaman 1</span>
-                    <button id="btn-next-page" onclick="changePage(1)" class="bg-navy-800 hover:bg-navy-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition border border-navy-700 flex items-center gap-1.5">
-                        Lanjut <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
             </div>
 
-            <!-- 4. WATCH VIEW -->
+            <!-- 3. WATCH VIEW -->
             <div id="view-watch" class="space-y-5 hidden animate-fade-in">
                 <div class="flex justify-between items-center bg-navy-900 p-3 rounded-2xl border border-navy-800">
                     <button onclick="goBackFromWatch()" class="text-xs font-bold text-gray-300 hover:text-accent-cyan flex items-center gap-1.5 transition bg-navy-800 px-3 py-1.5 rounded-xl border border-navy-700">
                         <i class="fa-solid fa-arrow-left"></i> Kembali
                     </button>
-                    <h2 id="watch-anime-title" class="text-xs md:text-base font-bold text-white truncate max-w-xs sm:max-w-md text-center">Anime Title - Episode 1</h2>
+                    <h2 id="watch-anime-title" class="text-xs md:text-base font-bold text-white truncate max-w-xs sm:max-w-md text-center">Loading Video...</h2>
                     <button id="watch-bookmark-btn" onclick="toggleBookmarkCurrent()" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-navy-800 text-white hover:text-accent-cyan border border-navy-700 flex items-center gap-1.5 transition">
                         <i class="fa-regular fa-bookmark"></i> <span class="hidden sm:inline">Favorit</span>
                     </button>
@@ -242,41 +176,28 @@
                     <div class="flex flex-wrap justify-between items-center gap-2 bg-navy-900 p-2.5 rounded-2xl border border-navy-800">
                         <div class="text-xs text-gray-300 flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                            <span>Status Player: <strong class="text-accent-cyan" id="player-status-text">Online</strong></span>
+                            <span>Status Player: <strong class="text-accent-cyan">Aktif (100% Subtitle Indonesia)</strong></span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="openNontonAnimeIDDirect()" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white font-extrabold px-3 py-1.5 rounded-xl text-[10px] md:text-xs flex items-center gap-1.5 hover:opacity-90 transition shadow">
-                                <i class="fa-solid fa-play"></i> Buka Server Sub Indo (NontonAnimeID)
-                            </button>
-                            <a id="direct-stream-link" href="#" target="_blank" class="bg-navy-800 border border-navy-700 text-accent-cyan font-bold px-3 py-1.5 rounded-xl text-[10px] md:text-xs flex items-center gap-1.5 hover:bg-navy-700 transition">
-                                <i class="fa-solid fa-up-right-from-square"></i> Tab Baru
-                            </a>
-                        </div>
+                        <a id="direct-stream-link" href="#" target="_blank" class="bg-accent-cyan text-black font-extrabold px-3 py-1.5 rounded-xl text-[10px] md:text-xs flex items-center gap-1.5 hover:bg-white transition shadow">
+                            <i class="fa-solid fa-up-right-from-square"></i> Layar Penuh
+                        </a>
                     </div>
 
-                    <!-- IFRAME PLAYER CONTAINER WITH RELIABLE EMBED & EMBED FALLBACK -->
+                    <!-- IFRAME PLAYER CONTAINER -->
                     <div class="aspect-video w-full bg-black rounded-2xl md:rounded-3xl overflow-hidden relative border border-navy-700 shadow-2xl glow-effect">
                         <iframe id="watch-iframe" src="" class="w-full h-full border-0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
                     </div>
 
-                    <!-- SERVER BUTTONS (NontonAnimeID / Multi-Server Style) -->
+                    <!-- CLEAN SERVER BUTTONS -->
                     <div class="glass p-3 rounded-2xl flex flex-col gap-2.5 border border-navy-800">
                         <div class="flex items-center gap-2 w-full overflow-x-auto hide-scroll pb-1">
-                            <span class="text-xs text-gray-400 font-bold whitespace-nowrap"><i class="fa-solid fa-server text-accent-cyan mr-1"></i> Pilih Server Video:</span>
+                            <span class="text-xs text-gray-400 font-bold whitespace-nowrap"><i class="fa-solid fa-server text-accent-cyan mr-1"></i> Pilih Server:</span>
                             <div class="flex gap-2" id="watch-server-buttons">
-                                <button onclick="switchWatchServer(1)" class="server-btn active px-3 py-1.5 rounded-xl text-xs font-bold bg-accent-cyan text-black shadow whitespace-nowrap">S-Lokal-c (VidSrc TO)</button>
-                                <button onclick="switchWatchServer(2)" class="server-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-800 text-gray-300 hover:bg-navy-700 whitespace-nowrap">S-Kotakvideo (VidSrc ME)</button>
-                                <button onclick="switchWatchServer(3)" class="server-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-800 text-gray-300 hover:bg-navy-700 whitespace-nowrap">S-Streamku (VidSrc CC)</button>
-                                <button onclick="switchWatchServer(4)" class="server-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-800 text-gray-300 hover:bg-navy-700 whitespace-nowrap">S-Nontonku (AutoEmbed)</button>
-                                <button onclick="switchWatchServer(5)" class="server-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-800 text-gray-300 hover:bg-navy-700 whitespace-nowrap">S-Lokal-1080 (2Embed)</button>
-                                <button onclick="switchWatchServer(6)" class="server-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-800 text-gray-300 hover:bg-navy-700 whitespace-nowrap">S-Trailer / YT</button>
+                                <button onclick="switchServer(1)" class="server-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-accent-cyan text-black shadow whitespace-nowrap">Server 1</button>
+                                <button onclick="switchServer(2)" class="server-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-800 text-gray-300 hover:bg-navy-700 whitespace-nowrap">Server 2</button>
+                                <button onclick="switchServer(3)" class="server-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-800 text-gray-300 hover:bg-navy-700 whitespace-nowrap">Server 3</button>
+                                <button onclick="switchServer(4)" class="server-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-800 text-gray-300 hover:bg-navy-700 whitespace-nowrap">Server 4</button>
                             </div>
-                        </div>
-                        <div class="flex flex-wrap justify-between items-center text-[11px] text-gray-300 bg-navy-950/80 p-2.5 rounded-xl border border-navy-800/80 gap-2">
-                            <span><i class="fa-solid fa-circle-check text-green-400 mr-1"></i> <strong>Sistem Otomatis:</strong> Klik dari beranda langsung memutar episode terbaru!</span>
-                            <button onclick="openNontonAnimeIDDirect()" class="text-accent-cyan hover:underline font-bold flex items-center gap-1">
-                                <i class="fa-solid fa-external-link text-[10px]"></i> Buka Langsung di NontonAnimeID (Sub Indo)
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -286,20 +207,13 @@
                     <div class="lg:col-span-2 glass p-4 md:p-5 rounded-2xl md:rounded-3xl border border-navy-800 space-y-3">
                         <div class="flex flex-wrap justify-between items-center border-b border-navy-800 pb-2.5 gap-2">
                             <h4 class="text-xs md:text-sm font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-list-ol text-accent-cyan"></i> Pilih Episode Anime
+                                <i class="fa-solid fa-list-ol text-accent-cyan"></i> Pilih Episode
                             </h4>
-                            <span id="watch-ep-count" class="text-[11px] text-accent-cyan font-semibold">Total Ep: 1</span>
-                        </div>
-
-                        <!-- DIRECT EPISODE INPUT JUMP -->
-                        <div id="ep-jump-box" class="flex items-center gap-2 bg-navy-950/80 p-2 rounded-xl border border-navy-800">
-                            <span class="text-xs text-gray-400 font-semibold whitespace-nowrap">Ketik Episode:</span>
-                            <input type="number" id="ep-jump-input" min="1" placeholder="cth: 9" class="w-20 bg-navy-900 border border-navy-700 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-accent-cyan">
-                            <button onclick="jumpToTypedEpisode()" class="bg-accent-cyan text-black font-extrabold px-3 py-1 rounded-lg text-xs hover:bg-white transition">Mainkan</button>
+                            <span id="watch-ep-count" class="text-[11px] text-accent-cyan font-semibold">Total Episode...</span>
                         </div>
 
                         <!-- EPISODE BUTTONS GRID -->
-                        <div id="watch-episodes-grid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 max-h-48 overflow-y-auto pr-1"></div>
+                        <div id="watch-episodes-grid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 max-h-56 overflow-y-auto pr-1"></div>
                     </div>
 
                     <div class="glass p-4 md:p-5 rounded-2xl md:rounded-3xl border border-navy-800 space-y-3">
@@ -308,7 +222,7 @@
                         </h4>
                         <div class="text-xs space-y-2 text-gray-300">
                             <p><strong class="text-gray-400">Skor Rating:</strong> <span id="watch-score" class="text-yellow-400 font-bold">8.5</span></p>
-                            <p><strong class="text-gray-400">Status:</strong> <span id="watch-status">Finished</span></p>
+                            <p><strong class="text-gray-400">Status:</strong> <span id="watch-status">Ongoing</span></p>
                             <p><strong class="text-gray-400">Genre:</strong> <span id="watch-genres">Action, Fantasy</span></p>
                             <div class="pt-2 border-t border-navy-800">
                                 <strong class="text-gray-400">Sinopsis:</strong>
@@ -322,43 +236,20 @@
         </div>
     </main>
 
-    <!-- JS ENGINE ANILIST PRO WITH NATIVE MOBILE BACK GESTURE SUPPORT & AUTO EPISODE PLAY -->
+    <!-- FRONTEND SCRIPT CONNECTED TO SUB INDO NODE.JS BACKEND -->
     <script>
-        const ANILIST_URL = 'https://graphql.anilist.co';
-        
-        let spotlightAnimes = [];
-        let heroIndex = 0;
-        let heroInterval = null;
-        let currentAnimeData = null;
-        let currentEpisodeNumber = 1;
-        let currentServerNumber = 1;
+        let currentAnimeDetail = null;
+        let currentEpisodeSlug = '';
         let activeView = 'home';
-        let previousView = 'home';
-        
-        let currentPage = 1;
-        let currentQueryType = 'popular';
-        let currentSearchQuery = '';
-        let currentGenreName = '';
-
         let bookmarks = JSON.parse(localStorage.getItem('riznetic_bookmarks') || '[]');
 
-        const GENRE_LIST = [
-            'Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 
-            'Horror', 'Mahou Shoujo', 'Mecha', 'Music', 'Mystery', 
-            'Psychological', 'Romance', 'Sci-Fi', 'Slice of Life', 
-            'Sports', 'Supernatural', 'Thriller'
-        ];
-
-        // INITIALIZATION & MOBILE BROWSER HISTORY FIX
         document.addEventListener('DOMContentLoaded', () => {
-            // Push initial state so native back button doesn't close app
             history.replaceState({ page: 'home' }, '', '#home');
 
-            // Listen to Mobile Back Button / Swipe Back Gesture
             window.addEventListener('popstate', (event) => {
                 if (event.state) {
-                    if (event.state.page === 'watch' && event.state.animeData) {
-                        openWatchPage(event.state.animeData, event.state.episode || 1, false);
+                    if (event.state.page === 'watch' && event.state.animeSlug) {
+                        loadAnimeDetailAndPlay(event.state.animeSlug, event.state.targetEp, false);
                     } else if (event.state.page) {
                         showPage(event.state.page, false);
                     }
@@ -367,27 +258,10 @@
                 }
             });
 
-            loadHomePage();
-            renderGenreButtons();
+            loadOngoingHome();
         });
 
-        async function fetchAniList(query, variables = {}) {
-            try {
-                const res = await fetch(ANILIST_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify({ query, variables })
-                });
-                const json = await res.json();
-                return json.data;
-            } catch (err) {
-                console.error('AniList GraphQL Error:', err);
-                return null;
-            }
-        }
-
         function showPage(page, pushHistory = true) {
-            previousView = activeView;
             activeView = page;
 
             if (pushHistory) {
@@ -399,16 +273,13 @@
             if (activeBtn) activeBtn.classList.add('text-accent-cyan');
 
             const viewHome = document.getElementById('view-home');
-            const viewGenre = document.getElementById('view-genre');
             const viewGrid = document.getElementById('view-grid');
             const viewWatch = document.getElementById('view-watch');
 
             viewHome.classList.add('hidden');
-            viewGenre.classList.add('hidden');
             viewGrid.classList.add('hidden');
             viewWatch.classList.add('hidden');
 
-            // Stop iframe playing when leaving watch page
             if (page !== 'watch') {
                 const iframe = document.getElementById('watch-iframe');
                 if (iframe) iframe.src = '';
@@ -416,229 +287,44 @@
 
             if (page === 'home') {
                 viewHome.classList.remove('hidden');
-            } else if (page === 'genre') {
-                viewGenre.classList.remove('hidden');
-                if (!currentGenreName) selectGenre('Action');
-            } else if (page === 'popular') {
-                viewGrid.classList.remove('hidden');
-                currentPage = 1;
-                currentQueryType = 'popular';
-                loadPopularGrid(1);
             } else if (page === 'latest') {
                 viewGrid.classList.remove('hidden');
-                currentPage = 1;
-                currentQueryType = 'latest';
-                loadLatestGrid(1);
+                document.getElementById('grid-page-title').innerText = 'Rilis Terbaru Sub Indo';
+                loadOngoingHome();
             } else if (page === 'bookmarks') {
                 viewGrid.classList.remove('hidden');
-                loadBookmarksGrid();
+                document.getElementById('grid-page-title').innerText = 'Favorit Saya';
+                renderBookmarksGrid();
             }
         }
 
-        function renderGenreButtons() {
-            const container = document.getElementById('genre-buttons-grid');
-            container.innerHTML = GENRE_LIST.map(g => `
-                <button onclick="selectGenre('${g}')" class="genre-btn bg-navy-900 hover:bg-accent-cyan hover:text-black text-gray-300 font-bold p-2 md:p-2.5 rounded-xl border border-navy-800 transition text-xs text-center">
-                    ${g}
-                </button>
-            `).join('');
-        }
+        async function loadOngoingHome() {
+            try {
+                const res = await fetch('/api/ongoing');
+                const json = await res.json();
+                
+                if (json.status && json.data.length > 0) {
+                    const list = json.data;
+                    setupHero(list[0]);
+                    renderCards('grid-latest', list);
+                    renderCards('grid-container', list);
 
-        async function selectGenre(genreName) {
-            currentGenreName = genreName;
-            document.getElementById('genre-title-display').innerText = `Genre: ${genreName}`;
-            document.getElementById('genre-container').innerHTML = `<div class="col-span-full text-center text-accent-cyan font-semibold py-12 animate-pulse">Memuat anime genre ${genreName}...</div>`;
-
-            const query = `
-                query ($genre: String) {
-                    Page(page: 1, perPage: 24) {
-                        media(genre: $genre, type: ANIME, sort: SCORE_DESC) {
-                            id
-                            title { romaji english native }
-                            coverImage { extraLarge large }
-                            averageScore
-                            episodes
-                            nextAiringEpisode { episode }
-                            status
-                            genres
-                            description
-                            trailer { id site }
-                        }
-                    }
+                    document.getElementById('loading-spinner').classList.add('hidden');
+                    document.getElementById('view-home').classList.remove('hidden');
                 }
-            `;
-
-            const data = await fetchAniList(query, { genre: genreName });
-            if (data && data.Page && data.Page.media) {
-                renderCards('genre-container', normalizeAniListData(data.Page.media));
+            } catch (err) {
+                console.error('Error fetching ongoing:', err);
             }
         }
 
-        async function loadHomePage() {
-            const query = `
-                query {
-                    latestAiring: Page(page: 1, perPage: 12) {
-                        airingSchedules(notYetAired: false, sort: TIME_DESC) {
-                            episode
-                            media {
-                                id
-                                title { romaji english native }
-                                coverImage { extraLarge large }
-                                bannerImage
-                                averageScore
-                                episodes
-                                nextAiringEpisode { episode }
-                                status
-                                genres
-                                description
-                                trailer { id site }
-                            }
-                        }
-                    }
-                    trending: Page(page: 1, perPage: 12) {
-                        media(sort: TRENDING_DESC, type: ANIME) {
-                            id
-                            title { romaji english native }
-                            coverImage { extraLarge large }
-                            bannerImage
-                            averageScore
-                            episodes
-                            nextAiringEpisode { episode }
-                            status
-                            genres
-                            description
-                            trailer { id site }
-                        }
-                    }
-                    popular: Page(page: 1, perPage: 12) {
-                        media(sort: POPULARITY_DESC, type: ANIME) {
-                            id
-                            title { romaji english native }
-                            coverImage { extraLarge large }
-                            bannerImage
-                            averageScore
-                            episodes
-                            nextAiringEpisode { episode }
-                            status
-                            genres
-                            description
-                            trailer { id site }
-                        }
-                    }
-                }
-            `;
-
-            const data = await fetchAniList(query);
-            if (data) {
-                let latestAnimeList = [];
-                if (data.latestAiring && data.latestAiring.airingSchedules && data.latestAiring.airingSchedules.length > 0) {
-                    const rawList = data.latestAiring.airingSchedules.map(item => {
-                        const m = item.media;
-                        m.latestEpisodeAired = item.episode;
-                        return m;
-                    });
-                    latestAnimeList = normalizeAniListData(rawList);
-                } else if (data.trending && data.trending.media) {
-                    latestAnimeList = normalizeAniListData(data.trending.media);
-                }
-
-                if (data.trending && data.trending.media) {
-                    const normTrending = normalizeAniListData(data.trending.media);
-                    spotlightAnimes = normTrending.slice(0, 5);
-                    setupHeroCarousel();
-                }
-
-                renderCards('grid-latest', latestAnimeList);
-
-                if (data.popular && data.popular.media) {
-                    renderCards('grid-popular', normalizeAniListData(data.popular.media));
-                }
-
-                document.getElementById('loading-spinner').classList.add('hidden');
-                document.getElementById('view-home').classList.remove('hidden');
-            }
-        }
-
-        function normalizeAniListData(list) {
-            return list.map(item => {
-                let calculatedEpisodes = item.episodes;
-                if (item.latestEpisodeAired) {
-                    calculatedEpisodes = item.latestEpisodeAired;
-                } else if (item.nextAiringEpisode && item.nextAiringEpisode.episode) {
-                    calculatedEpisodes = item.nextAiringEpisode.episode - 1;
-                } else if (!calculatedEpisodes || calculatedEpisodes <= 0) {
-                    calculatedEpisodes = (item.status === 'RELEASING') ? 24 : 12;
-                }
-
-                return {
-                    id: item.id,
-                    title: item.title.english || item.title.romaji || item.title.native,
-                    cover: item.coverImage.extraLarge || item.coverImage.large,
-                    banner: item.bannerImage || item.coverImage.extraLarge,
-                    score: item.averageScore ? (item.averageScore / 10).toFixed(1) : '8.5',
-                    episodes: calculatedEpisodes,
-                    status: item.status || 'FINISHED',
-                    genres: item.genres || ['Anime'],
-                    synopsis: item.description ? item.description.replace(/<[^>]*>?/gm, '') : 'Sinopsis belum tersedia.',
-                    trailerId: item.trailer ? item.trailer.id : null
-                };
-            });
-        }
-
-        function setupHeroCarousel() {
-            if (spotlightAnimes.length === 0) return;
-            renderHeroSlide(0);
-
-            const dotsContainer = document.getElementById('hero-dots');
-            dotsContainer.innerHTML = spotlightAnimes.map((_, idx) => `
-                <button onclick="setHeroSlide(${idx})" class="w-2.5 h-2.5 rounded-full ${idx === 0 ? 'bg-accent-cyan w-5' : 'bg-white/40'} transition-all duration-300"></button>
-            `).join('');
-
-            startHeroSlider();
-        }
-
-        function renderHeroSlide(index) {
-            heroIndex = index;
-            const anime = spotlightAnimes[index];
-            if (!anime) return;
-
-            document.getElementById('hero-bg').style.backgroundImage = `url('${anime.banner || anime.cover}')`;
+        function setupHero(anime) {
+            document.getElementById('hero-bg').style.backgroundImage = `url('${anime.thumb}')`;
             document.getElementById('hero-title').innerText = anime.title;
-            document.getElementById('hero-score').innerHTML = `<i class="fa-solid fa-star"></i> ${anime.score}/10`;
-            document.getElementById('hero-status').innerText = anime.status;
-            document.getElementById('hero-synopsis').innerText = anime.synopsis;
-
-            // Clicking hero play button auto plays latest episode
-            document.getElementById('hero-play-btn').onclick = () => openWatchPage(anime, anime.episodes || 1);
-
-            const dots = document.querySelectorAll('#hero-dots button');
-            dots.forEach((dot, idx) => {
-                dot.className = (idx === index) 
-                    ? "w-5 h-2.5 rounded-full bg-accent-cyan transition-all duration-300"
-                    : "w-2.5 h-2.5 rounded-full bg-white/40 transition-all duration-300";
-            });
-        }
-
-        function startHeroSlider() {
-            if (heroInterval) clearInterval(heroInterval);
-            heroInterval = setInterval(() => { nextHeroSlide(); }, 5000);
-        }
-
-        function pauseHeroSlider() { if (heroInterval) clearInterval(heroInterval); }
-
-        function nextHeroSlide() {
-            let next = (heroIndex + 1) % spotlightAnimes.length;
-            renderHeroSlide(next);
-        }
-
-        function prevHeroSlide() {
-            let prev = (heroIndex - 1 + spotlightAnimes.length) % spotlightAnimes.length;
-            renderHeroSlide(prev);
-        }
-
-        function setHeroSlide(idx) {
-            renderHeroSlide(idx);
-            startHeroSlider();
+            document.getElementById('hero-status').innerText = `Episode ${anime.episode} Sub Indo`;
+            
+            document.getElementById('hero-play-btn').onclick = () => {
+                loadAnimeDetailAndPlay(anime.slug, anime.episode);
+            };
         }
 
         function renderCards(targetId, animeList) {
@@ -648,17 +334,12 @@
                 return;
             }
 
-            container.innerHTML = animeList.map(anime => {
-                const latestEp = anime.episodes || 1;
-                return `
-                <div onclick='openWatchPage(${JSON.stringify(anime).replace(/'/g, "&apos;")}, ${latestEp})' class="card-hover cursor-pointer group bg-navy-900 rounded-xl md:rounded-2xl overflow-hidden border border-navy-800 flex flex-col h-full shadow-lg">
+            container.innerHTML = animeList.map(anime => `
+                <div onclick="loadAnimeDetailAndPlay('${anime.slug}', ${anime.episode || 1})" class="card-hover cursor-pointer group bg-navy-900 rounded-xl md:rounded-2xl overflow-hidden border border-navy-800 flex flex-col h-full shadow-lg">
                     <div class="relative aspect-[3/4] overflow-hidden bg-navy-950">
-                        <img src="${anime.cover}" alt="${anime.title}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" loading="lazy">
-                        <div class="absolute top-1.5 right-1.5 md:top-2 md:right-2 bg-black/75 backdrop-blur-md text-yellow-400 text-[10px] md:text-[11px] font-bold px-1.5 md:px-2 py-0.5 rounded-full flex items-center gap-1 border border-white/10">
-                            <i class="fa-solid fa-star text-[8px] md:text-[9px]"></i> ${anime.score}
-                        </div>
+                        <img src="${anime.thumb}" alt="${anime.title}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" loading="lazy">
                         <div class="absolute bottom-1.5 left-1.5 md:bottom-2 md:left-2 bg-navy-900/90 text-accent-cyan text-[9px] md:text-[10px] font-extrabold px-1.5 md:px-2 py-0.5 rounded border border-accent-cyan/30">
-                            Ep ${latestEp}
+                            Ep ${anime.episode || '1'} Sub Indo
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                             <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-accent-cyan text-black flex items-center justify-center text-base md:text-lg shadow-lg glow-effect">
@@ -668,66 +349,105 @@
                     </div>
                     <div class="p-2.5 md:p-3 flex flex-col justify-between flex-1">
                         <h4 class="font-bold text-[11px] md:text-xs text-white line-clamp-2 group-hover:text-accent-cyan transition leading-tight">${anime.title}</h4>
-                        <p class="text-[9px] md:text-[10px] text-gray-400 mt-1.5 flex justify-between">
-                            <span>ANIME</span>
-                            <span class="truncate max-w-[60px]">${anime.status}</span>
-                        </p>
                     </div>
                 </div>
-            `;
-            }).join('');
+            `).join('');
         }
 
-        // AUTO PLAY SPECIFIED EPISODE & SUPPORT MOBILE BACK GESTURE
-        function openWatchPage(anime, targetEp = null, pushHistory = true) {
-            currentAnimeData = anime;
-            
-            // Automatically select latest episode if clicked from card (e.g. Ep 9)
-            const epToPlay = targetEp || anime.episodes || 1;
-            currentEpisodeNumber = epToPlay;
+        async function loadAnimeDetailAndPlay(slug, targetEp = null, pushHistory = true) {
+            try {
+                document.getElementById('view-home').classList.add('hidden');
+                document.getElementById('view-grid').classList.add('hidden');
+                document.getElementById('view-watch').classList.remove('hidden');
 
-            if (pushHistory) {
-                history.pushState({ page: 'watch', animeData: anime, episode: epToPlay }, '', '#watch-' + anime.id + '-ep' + epToPlay);
+                if (pushHistory) {
+                    history.pushState({ page: 'watch', animeSlug: slug, targetEp }, '', '#watch-' + slug);
+                }
+
+                document.getElementById('watch-anime-title').innerText = 'Memuat Episode...';
+                
+                const res = await fetch(`/api/anime/${slug}`);
+                const json = await res.json();
+
+                if (json.status) {
+                    const data = json.data;
+                    currentAnimeDetail = data;
+
+                    document.getElementById('watch-score').innerText = data.score;
+                    document.getElementById('watch-status').innerText = data.status;
+                    document.getElementById('watch-genres').innerText = data.genres;
+                    document.getElementById('watch-synopsis').innerText = data.synopsis;
+                    document.getElementById('watch-ep-count').innerText = `Total Episode: ${data.episodes.length}`;
+
+                    let selectedEpObj = null;
+                    if (targetEp) {
+                        selectedEpObj = data.episodes.find(e => e.episode === targetEp);
+                    }
+                    if (!selectedEpObj && data.episodes.length > 0) {
+                        selectedEpObj = data.episodes[data.episodes.length - 1];
+                    }
+
+                    const epGrid = document.getElementById('watch-episodes-grid');
+                    epGrid.innerHTML = data.episodes.map(ep => {
+                        const isActive = (selectedEpObj && selectedEpObj.slug === ep.slug);
+                        return `
+                            <button onclick="playEpisode('${ep.slug}', ${ep.episode}, '${data.title}')" class="watch-ep-btn ${isActive ? 'bg-accent-cyan text-black font-extrabold shadow' : 'bg-navy-800 text-gray-300 hover:bg-navy-700'} rounded-lg md:rounded-xl py-1.5 md:py-2 text-xs font-bold transition">
+                                ${ep.episode}
+                            </button>
+                        `;
+                    }).join('');
+
+                    if (selectedEpObj) {
+                        playEpisode(selectedEpObj.slug, selectedEpObj.episode, data.title);
+                    }
+
+                    updateBookmarkButtonState();
+                    document.getElementById('main-container').scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            } catch (err) {
+                console.error('Error loading anime detail:', err);
             }
-
-            document.getElementById('view-home').classList.add('hidden');
-            document.getElementById('view-genre').classList.add('hidden');
-            document.getElementById('view-grid').classList.add('hidden');
-            document.getElementById('view-watch').classList.remove('hidden');
-
-            document.getElementById('watch-anime-title').innerText = `${anime.title} - Episode ${epToPlay}`;
-            document.getElementById('watch-score').innerText = anime.score;
-            document.getElementById('watch-status').innerText = anime.status;
-            document.getElementById('watch-genres').innerText = Array.isArray(anime.genres) ? anime.genres.join(', ') : 'Anime';
-            document.getElementById('watch-synopsis').innerText = anime.synopsis;
-
-            const totalEp = Math.max(anime.episodes || 1, epToPlay);
-            document.getElementById('watch-ep-count').innerText = `Total Episode: ${totalEp}`;
-
-            const epGrid = document.getElementById('watch-episodes-grid');
-            let epHtml = '';
-            const maxButtons = Math.min(totalEp, 80);
-            for (let i = 1; i <= maxButtons; i++) {
-                const isActive = (i === epToPlay);
-                epHtml += `
-                    <button onclick="changeWatchEpisode(${i})" class="watch-ep-btn ${isActive ? 'bg-accent-cyan text-black font-extrabold shadow' : 'bg-navy-800 text-gray-300 hover:bg-navy-700'} rounded-lg md:rounded-xl py-1.5 md:py-2 text-xs font-bold transition">
-                        ${i}
-                    </button>
-                `;
-            }
-            epGrid.innerHTML = epHtml;
-
-            updateBookmarkButtonState();
-            switchWatchServer(1);
-            
-            document.getElementById('main-container').scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function jumpToTypedEpisode() {
-            const input = document.getElementById('ep-jump-input');
-            const epNum = parseInt(input.value);
-            if (epNum && epNum > 0) {
-                changeWatchEpisode(epNum);
+        async function playEpisode(epSlug, epNum, title) {
+            currentEpisodeSlug = epSlug;
+            document.getElementById('watch-anime-title').innerText = `${title} - Episode ${epNum} (Sub Indo)`;
+            
+            const buttons = document.querySelectorAll('.watch-ep-btn');
+            buttons.forEach(btn => {
+                if (parseInt(btn.innerText) === epNum) {
+                    btn.className = "watch-ep-btn bg-accent-cyan text-black font-extrabold rounded-lg md:rounded-xl py-1.5 md:py-2 text-xs transition shadow";
+                } else {
+                    btn.className = "watch-ep-btn bg-navy-800 text-gray-300 hover:bg-navy-700 rounded-lg md:rounded-xl py-1.5 md:py-2 text-xs font-bold transition";
+                }
+            });
+
+            try {
+                const res = await fetch(`/api/episode/${epSlug}`);
+                const json = await res.json();
+                if (json.status && json.data.streamUrl) {
+                    const iframe = document.getElementById('watch-iframe');
+                    const directBtn = document.getElementById('direct-stream-link');
+
+                    iframe.src = json.data.streamUrl;
+                    directBtn.href = json.data.streamUrl;
+                }
+            } catch (err) {
+                console.error('Error loading stream:', err);
+            }
+        }
+
+        function switchServer(num) {
+            const btns = document.querySelectorAll('.server-btn');
+            btns.forEach((btn, idx) => {
+                if (idx === num - 1) {
+                    btn.className = "server-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-accent-cyan text-black shadow whitespace-nowrap";
+                } else {
+                    btn.className = "server-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-800 text-gray-300 hover:bg-navy-700 whitespace-nowrap";
+                }
+            });
+            if (currentEpisodeSlug) {
+                playEpisode(currentEpisodeSlug, 1, currentAnimeDetail ? currentAnimeDetail.title : 'Anime');
             }
         }
 
@@ -739,287 +459,52 @@
             }
         }
 
-        function openNontonAnimeIDDirect() {
-            if (!currentAnimeData) return;
-            // Generate clean slug search URL for NontonAnimeID / Indonesian Sub Provider
-            const cleanTitle = currentAnimeData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-            const directUrl = `https://nontonanimeid.boats/${cleanTitle}-episode-${currentEpisodeNumber}/`;
-            const searchUrl = `https://www.google.com/search?q=${encodeURIComponent('nonton ' + currentAnimeData.title + ' episode ' + currentEpisodeNumber + ' sub indo')}`;
-            
-            // Try opening direct episode page, fallback to google search for sub indo player
-            window.open(directUrl, '_blank') || window.open(searchUrl, '_blank');
-        }
-
-        function loadWatchStream(anime, epNum, serverNum = 1) {
-            const iframe = document.getElementById('watch-iframe');
-            const directBtn = document.getElementById('direct-stream-link');
-
-            let streamUrl = '';
-
-            // ROCK-SOLID FAST WORKING SERVERS
-            if (serverNum === 1) {
-                // S-Lokal-c: VidSrc TO (Fastest & HD)
-                streamUrl = `https://vidsrc.to/embed/anime/${anime.id}/${epNum}`;
-            } else if (serverNum === 2) {
-                // S-Kotakvideo: VidSrc ME
-                streamUrl = `https://vidsrc.me/embed/anime?anilist=${anime.id}&ep=${epNum}`;
-            } else if (serverNum === 3) {
-                // S-Streamku: VidSrc CC
-                streamUrl = `https://vidsrc.cc/v2/embed/anime/${anime.id}/${epNum}`;
-            } else if (serverNum === 4) {
-                // S-Nontonku: AutoEmbed
-                streamUrl = `https://player.autoembed.cc/embed/anime/${anime.id}/${epNum}`;
-            } else if (serverNum === 5) {
-                // S-Lokal-1080: 2Embed
-                streamUrl = `https://www.2embed.cc/embedanime/${anime.id}/${epNum}`;
-            } else if (serverNum === 6) {
-                // Trailer / YouTube Player
-                if (anime.trailerId) {
-                    streamUrl = `https://www.youtube.com/embed/${anime.trailerId}?autoplay=1`;
-                } else {
-                    streamUrl = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(anime.title + ' episode ' + epNum + ' sub indo')}`;
-                }
-            }
-
-            iframe.src = streamUrl;
-            directBtn.href = streamUrl;
-        }
-
-        function changeWatchEpisode(epNum) {
-            currentEpisodeNumber = epNum;
-            document.getElementById('watch-anime-title').innerText = `${currentAnimeData.title} - Episode ${epNum}`;
-            
-            const buttons = document.querySelectorAll('.watch-ep-btn');
-            buttons.forEach(btn => {
-                if (parseInt(btn.innerText) === epNum) {
-                    btn.className = "watch-ep-btn bg-accent-cyan text-black font-extrabold rounded-lg md:rounded-xl py-1.5 md:py-2 text-xs transition shadow";
-                } else {
-                    btn.className = "watch-ep-btn bg-navy-800 text-gray-300 hover:bg-navy-700 rounded-lg md:rounded-xl py-1.5 md:py-2 text-xs font-bold transition";
-                }
-            });
-
-            loadWatchStream(currentAnimeData, epNum, currentServerNumber);
-        }
-
-        function switchWatchServer(serverNum) {
-            currentServerNumber = serverNum;
-            const buttons = document.querySelectorAll('#watch-server-buttons .server-btn');
-            buttons.forEach((btn, idx) => {
-                btn.className = (idx === serverNum - 1)
-                    ? "server-btn active px-3 py-1.5 rounded-xl text-xs font-bold bg-accent-cyan text-black shadow whitespace-nowrap"
-                    : "server-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-800 text-gray-300 hover:bg-navy-700 whitespace-nowrap";
-            });
-            loadWatchStream(currentAnimeData, currentEpisodeNumber, serverNum);
-        }
-
         async function submitSearch(e) {
             if (e) e.preventDefault();
             const input = document.getElementById('header-search-input');
-            const queryText = input.value.trim();
-            if (!queryText) return;
+            const q = input.value.trim();
+            if (!q) return;
 
-            currentQueryType = 'search';
-            currentSearchQuery = queryText;
-            currentPage = 1;
+            showPage('latest');
+            document.getElementById('grid-page-title').innerText = `Hasil Pencarian Sub Indo: "${q}"`;
+            document.getElementById('grid-container').innerHTML = `<div class="col-span-full py-16 text-center text-accent-cyan font-semibold animate-pulse">Sedang mencari "${q}" Sub Indo...</div>`;
 
-            document.getElementById('view-home').classList.add('hidden');
-            document.getElementById('view-genre').classList.add('hidden');
-            document.getElementById('view-watch').classList.add('hidden');
-            document.getElementById('view-grid').classList.remove('hidden');
-
-            executeSearchFetch(queryText, 1);
-        }
-
-        async function executeSearchFetch(queryText, page = 1) {
-            document.getElementById('grid-page-title').innerText = `Hasil Pencarian: "${queryText}"`;
-            document.getElementById('grid-page-count').innerText = `Halaman ${page}`;
-            document.getElementById('grid-container').innerHTML = `<div class="col-span-full py-16 text-center text-accent-cyan font-semibold animate-pulse">Sedang mencari "${queryText}" di database AniList...</div>`;
-            document.getElementById('pagination-box').classList.add('hidden');
-
-            const query = `
-                query ($search: String, $page: Int) {
-                    Page(page: $page, perPage: 24) {
-                        pageInfo { hasNextPage }
-                        media(search: $search, type: ANIME, sort: POPULARITY_DESC) {
-                            id
-                            title { romaji english native }
-                            coverImage { extraLarge large }
-                            averageScore
-                            episodes
-                            nextAiringEpisode { episode }
-                            status
-                            genres
-                            description
-                            trailer { id site }
-                        }
-                    }
+            try {
+                const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+                const json = await res.json();
+                if (json.status) {
+                    renderCards('grid-container', json.data);
                 }
-            `;
-
-            const data = await fetchAniList(query, { search: queryText, page });
-            if (data && data.Page && data.Page.media) {
-                const norm = normalizeAniListData(data.Page.media);
-                renderCards('grid-container', norm);
-                setupPaginationUI(data.Page.pageInfo);
-            } else {
-                document.getElementById('grid-container').innerHTML = `<p class="col-span-full text-center text-gray-400 py-12">Tidak ada anime dengan judul "${queryText}" ditemukan.</p>`;
+            } catch (err) {
+                console.error('Error searching:', err);
             }
         }
 
-        async function loadPopularGrid(page = 1) {
-            document.getElementById('grid-page-title').innerText = 'Anime Terpopuler';
-            document.getElementById('grid-page-count').innerText = `Halaman ${page}`;
-            document.getElementById('grid-container').innerHTML = `<div class="col-span-full py-16 text-center text-accent-cyan font-semibold animate-pulse">Memuat anime populer...</div>`;
-
-            const query = `
-                query ($page: Int) {
-                    Page(page: $page, perPage: 24) {
-                        pageInfo { hasNextPage }
-                        media(sort: POPULARITY_DESC, type: ANIME) {
-                            id
-                            title { romaji english native }
-                            coverImage { extraLarge large }
-                            averageScore
-                            episodes
-                            nextAiringEpisode { episode }
-                            status
-                            genres
-                            description
-                            trailer { id site }
-                        }
-                    }
-                }
-            `;
-
-            const data = await fetchAniList(query, { page });
-            if (data && data.Page && data.Page.media) {
-                renderCards('grid-container', normalizeAniListData(data.Page.media));
-                setupPaginationUI(data.Page.pageInfo);
-            }
-        }
-
-        async function loadLatestGrid(page = 1) {
-            document.getElementById('grid-page-title').innerText = 'Anime Rilis Terbaru & Update';
-            document.getElementById('grid-page-count').innerText = `Halaman ${page}`;
-            document.getElementById('grid-container').innerHTML = `<div class="col-span-full py-16 text-center text-accent-cyan font-semibold animate-pulse">Memuat anime rilis terbaru...</div>`;
-
-            const query = `
-                query ($page: Int) {
-                    Page(page: $page, perPage: 24) {
-                        pageInfo { hasNextPage }
-                        airingSchedules(notYetAired: false, sort: TIME_DESC) {
-                            episode
-                            media {
-                                id
-                                title { romaji english native }
-                                coverImage { extraLarge large }
-                                averageScore
-                                episodes
-                                nextAiringEpisode { episode }
-                                status
-                                genres
-                                description
-                                trailer { id site }
-                            }
-                        }
-                    }
-                }
-            `;
-
-            const data = await fetchAniList(query, { page });
-            if (data && data.Page && data.Page.airingSchedules) {
-                const rawList = data.Page.airingSchedules.map(item => {
-                    const m = item.media;
-                    m.latestEpisodeAired = item.episode;
-                    return m;
-                });
-                renderCards('grid-container', normalizeAniListData(rawList));
-                setupPaginationUI(data.Page.pageInfo);
-            } else {
-                const fallbackQuery = `
-                    query ($page: Int) {
-                        Page(page: $page, perPage: 24) {
-                            pageInfo { hasNextPage }
-                            media(sort: TRENDING_DESC, type: ANIME, status_in: [RELEASING]) {
-                                id
-                                title { romaji english native }
-                                coverImage { extraLarge large }
-                                averageScore
-                                episodes
-                                nextAiringEpisode { episode }
-                                status
-                                genres
-                                description
-                                trailer { id site }
-                            }
-                        }
-                    }
-                `;
-                const fallbackData = await fetchAniList(fallbackQuery, { page });
-                if (fallbackData && fallbackData.Page && fallbackData.Page.media) {
-                    renderCards('grid-container', normalizeAniListData(fallbackData.Page.media));
-                    setupPaginationUI(fallbackData.Page.pageInfo);
-                }
-            }
-        }
-
-        function loadBookmarksGrid() {
-            document.getElementById('grid-page-title').innerText = 'Favorit Saya';
-            document.getElementById('grid-page-count').innerText = `${bookmarks.length} Anime Disimpan`;
+        function renderBookmarksGrid() {
             renderCards('grid-container', bookmarks);
-            document.getElementById('pagination-box').classList.add('hidden');
-        }
-
-        function setupPaginationUI(pageInfo) {
-            const paginationBox = document.getElementById('pagination-box');
-            if (!pageInfo) {
-                paginationBox.classList.add('hidden');
-                return;
-            }
-
-            paginationBox.classList.remove('hidden');
-            document.getElementById('page-number-indicator').innerText = `Halaman ${currentPage}`;
-            
-            const btnPrev = document.getElementById('btn-prev-page');
-            const btnNext = document.getElementById('btn-next-page');
-
-            btnPrev.disabled = (currentPage === 1);
-            btnPrev.style.opacity = (currentPage === 1) ? "0.5" : "1";
-            btnNext.disabled = !pageInfo.hasNextPage;
-            btnNext.style.opacity = (!pageInfo.hasNextPage) ? "0.5" : "1";
-        }
-
-        function changePage(direction) {
-            currentPage += direction;
-            if (currentPage < 1) currentPage = 1;
-
-            document.getElementById('main-container').scrollTo({ top: 0, behavior: 'smooth' });
-
-            if (currentQueryType === 'popular') {
-                loadPopularGrid(currentPage);
-            } else if (currentQueryType === 'latest') {
-                loadLatestGrid(currentPage);
-            } else if (currentQueryType === 'search') {
-                executeSearchFetch(currentSearchQuery, currentPage);
-            }
         }
 
         function toggleBookmarkCurrent() {
-            if (!currentAnimeData) return;
-            const idx = bookmarks.findIndex(a => a.id === currentAnimeData.id);
+            if (!currentAnimeDetail) return;
+            const idx = bookmarks.findIndex(a => a.slug === currentAnimeDetail.slug);
             if (idx > -1) {
                 bookmarks.splice(idx, 1);
             } else {
-                bookmarks.push(currentAnimeData);
+                bookmarks.push({
+                    title: currentAnimeDetail.title,
+                    thumb: currentAnimeDetail.thumb,
+                    slug: currentAnimeDetail.slug,
+                    episode: currentAnimeDetail.episodes ? currentAnimeDetail.episodes.length : 1
+                });
             }
             localStorage.setItem('riznetic_bookmarks', JSON.stringify(bookmarks));
             updateBookmarkButtonState();
         }
 
         function updateBookmarkButtonState() {
-            if (!currentAnimeData) return;
+            if (!currentAnimeDetail) return;
             const btn = document.getElementById('watch-bookmark-btn');
-            const isBookmarked = bookmarks.some(a => a.id === currentAnimeData.id);
+            const isBookmarked = bookmarks.some(a => a.slug === currentAnimeDetail.slug);
             if (isBookmarked) {
                 btn.innerHTML = `<i class="fa-solid fa-bookmark text-accent-cyan"></i> Tersimpan`;
                 btn.classList.add('border-accent-cyan');
@@ -1027,34 +512,6 @@
                 btn.innerHTML = `<i class="fa-regular fa-bookmark"></i> <span class="hidden sm:inline">Favorit</span>`;
                 btn.classList.remove('border-accent-cyan');
             }
-        }
-
-        function showRandomAnime() {
-            const query = `
-                query {
-                    Page(page: 1, perPage: 50) {
-                        media(sort: POPULARITY_DESC, type: ANIME) {
-                            id
-                            title { romaji english native }
-                            coverImage { extraLarge large }
-                            averageScore
-                            episodes
-                            nextAiringEpisode { episode }
-                            status
-                            genres
-                            description
-                            trailer { id site }
-                        }
-                    }
-                }
-            `;
-            fetchAniList(query).then(data => {
-                if (data && data.Page && data.Page.media) {
-                    const norm = normalizeAniListData(data.Page.media);
-                    const randomItem = norm[Math.floor(Math.random() * norm.length)];
-                    openWatchPage(randomItem, randomItem.episodes || 1);
-                }
-            });
         }
     </script>
 </body>
