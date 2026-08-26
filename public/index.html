@@ -47,11 +47,23 @@
             <span class="text-[9px] font-bold tracking-wider text-accent-cyan mt-1 group-hover:text-white transition">RIZ</span>
         </a>
 
-        <!-- FULL NAVBAR BUTTONS -->
+        <!-- NAVBAR BUTTONS LENGKAP -->
         <nav class="flex flex-row md:flex-col gap-1 md:gap-4 items-center justify-around w-full md:w-auto">
             <button onclick="showPage('home')" id="nav-home" class="nav-btn text-accent-cyan transition p-2 md:p-2.5 rounded-xl relative group flex flex-col items-center">
                 <i class="fa-solid fa-house text-base md:text-lg"></i>
                 <span class="text-[8px] md:hidden mt-0.5 font-medium">Beranda</span>
+            </button>
+            <button onclick="showPage('genre')" id="nav-genre" class="nav-btn text-gray-400 hover:text-accent-cyan transition p-2 md:p-2.5 rounded-xl relative group flex flex-col items-center">
+                <i class="fa-solid fa-tags text-base md:text-lg"></i>
+                <span class="text-[8px] md:hidden mt-0.5 font-medium">Genre</span>
+            </button>
+            <button onclick="showPage('popular')" id="nav-popular" class="nav-btn text-gray-400 hover:text-accent-cyan transition p-2 md:p-2.5 rounded-xl relative group flex flex-col items-center">
+                <i class="fa-solid fa-fire text-base md:text-lg"></i>
+                <span class="text-[8px] md:hidden mt-0.5 font-medium">Populer</span>
+            </button>
+            <button onclick="showPage('latest')" id="nav-latest" class="nav-btn text-gray-400 hover:text-accent-cyan transition p-2 md:p-2.5 rounded-xl relative group flex flex-col items-center">
+                <i class="fa-solid fa-bolt text-base md:text-lg"></i>
+                <span class="text-[8px] md:hidden mt-0.5 font-medium">Terbaru</span>
             </button>
             <button onclick="showPage('bookmarks')" id="nav-bookmarks" class="nav-btn text-gray-400 hover:text-accent-cyan transition p-2 md:p-2.5 rounded-xl relative group flex flex-col items-center">
                 <i class="fa-solid fa-bookmark text-base md:text-lg"></i>
@@ -77,7 +89,6 @@
                 <span class="text-[10px] bg-accent-cyan/10 text-accent-cyan px-2 py-0.5 rounded-full border border-accent-cyan/20 font-bold hidden lg:inline-block">v10.0 Fullstack Engine</span>
             </div>
 
-            <!-- SEARCH FORM -->
             <form onsubmit="submitSearch(event)" class="relative w-44 sm:w-64 md:w-96">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs md:text-sm"></i>
                 <input type="text" id="header-search-input" placeholder="Cari anime..." 
@@ -90,12 +101,12 @@
         <div id="page-content" class="p-4 md:p-6">
             <div id="loading-spinner" class="flex flex-col items-center justify-center min-h-[50vh]">
                 <div class="w-10 h-10 border-4 border-accent-cyan border-t-transparent rounded-full animate-spin"></div>
-                <p class="mt-3 text-xs md:text-sm font-medium text-gray-400">Memuat Anime (Server Lokal)...</p>
+                <p class="mt-3 text-xs md:text-sm font-medium text-gray-400">Memuat Anime Sub Indo...</p>
             </div>
 
             <!-- 1. HOME VIEW -->
             <div id="view-home" class="space-y-6 md:space-y-8 hidden">
-                <section id="hero-section" class="relative rounded-2xl md:rounded-3xl overflow-hidden min-h-[300px] md:min-h-[380px] flex items-end border border-navy-800 shadow-2xl bg-navy-900 group hidden">
+                <section id="hero-section" class="relative rounded-2xl md:rounded-3xl overflow-hidden min-h-[300px] md:min-h-[380px] flex items-end border border-navy-800 shadow-2xl bg-navy-900 group">
                     <div id="hero-bg" class="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out scale-105"></div>
                     <div class="absolute inset-0 hero-gradient"></div>
                     <div class="relative z-10 p-5 md:p-10 max-w-2xl space-y-3">
@@ -116,14 +127,43 @@
                     <div class="flex justify-between items-center mb-3 md:mb-4">
                         <div class="flex items-center gap-2">
                             <div class="w-2 h-5 bg-accent-cyan rounded-full"></div>
-                            <h3 class="text-base md:text-lg font-bold text-white tracking-wide">Rilis Episode Terbaru (Sub Indo)</h3>
+                            <h3 class="text-base md:text-lg font-bold text-white tracking-wide">Rilis Episode Terbaru</h3>
                         </div>
+                        <button onclick="showPage('latest')" class="text-xs text-accent-cyan hover:underline font-semibold flex items-center gap-1">
+                            Lihat Semua <i class="fa-solid fa-chevron-right text-[9px]"></i>
+                        </button>
                     </div>
                     <div id="grid-latest" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"></div>
                 </section>
+
+                <section>
+                    <div class="flex justify-between items-center mb-3 md:mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-5 bg-blue-500 rounded-full"></div>
+                            <h3 class="text-base md:text-lg font-bold text-white tracking-wide">Tamat / Populer</h3>
+                        </div>
+                        <button onclick="showPage('popular')" class="text-xs text-accent-cyan hover:underline font-semibold flex items-center gap-1">
+                            Lihat Semua <i class="fa-solid fa-chevron-right text-[9px]"></i>
+                        </button>
+                    </div>
+                    <div id="grid-popular" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"></div>
+                </section>
             </div>
 
-            <!-- 2. GRID VIEW (Search, Bookmarks) -->
+            <!-- 2. GENRE VIEW -->
+            <div id="view-genre" class="space-y-5 hidden animate-fade-in">
+                <div class="border-b border-navy-800 pb-3">
+                    <h2 class="text-lg md:text-xl font-bold text-white">Filter Genre Anime</h2>
+                </div>
+                <div id="genre-buttons-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-2.5"></div>
+                
+                <div class="pt-4 border-t border-navy-800 space-y-3">
+                    <h3 id="genre-title-display" class="text-base md:text-lg font-bold text-accent-cyan">Genre: Action</h3>
+                    <div id="genre-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"></div>
+                </div>
+            </div>
+
+            <!-- 3. GRID VIEW (Search, Popular, Latest, Bookmarks) -->
             <div id="view-grid" class="space-y-5 hidden animate-fade-in">
                 <div class="flex justify-between items-center border-b border-navy-800 pb-3">
                     <h2 id="grid-page-title" class="text-lg md:text-xl font-bold text-white">Daftar Anime</h2>
@@ -131,7 +171,7 @@
                 <div id="grid-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"></div>
             </div>
 
-            <!-- 3. WATCH VIEW -->
+            <!-- 4. WATCH VIEW -->
             <div id="view-watch" class="space-y-5 hidden animate-fade-in">
                 <div class="flex justify-between items-center bg-navy-900 p-3 rounded-2xl border border-navy-800">
                     <button onclick="showPage('home')" class="text-xs font-bold text-gray-300 hover:text-accent-cyan flex items-center gap-1.5 transition bg-navy-800 px-3 py-1.5 rounded-xl border border-navy-700">
@@ -147,21 +187,19 @@
                     <div class="flex flex-wrap justify-between items-center gap-2 bg-navy-900 p-2.5 rounded-2xl border border-navy-800">
                         <div class="text-xs text-gray-300 flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                            <span>Status Player: <strong class="text-accent-cyan">Aktif (Local Sub Indo Server)</strong></span>
+                            <span>Status Player: <strong class="text-accent-cyan">Aktif (Sub Indo Server)</strong></span>
                         </div>
                         <a id="direct-stream-link" href="#" target="_blank" class="bg-accent-cyan text-black font-extrabold px-3 py-1.5 rounded-xl text-[10px] md:text-xs flex items-center gap-1.5 hover:bg-white transition shadow">
                             <i class="fa-solid fa-up-right-from-square"></i> Layar Penuh
                         </a>
                     </div>
 
-                    <!-- IFRAME PLAYER CONTAINER -->
                     <div id="player-container" class="aspect-video w-full bg-black rounded-2xl md:rounded-3xl overflow-hidden relative border border-navy-700 shadow-2xl glow-effect flex items-center justify-center">
                         <iframe id="watch-iframe" src="" class="w-full h-full border-0 hidden" allowfullscreen allow="autoplay; encrypted-media"></iframe>
                         <p id="player-loading" class="text-accent-cyan text-sm font-bold animate-pulse">Menarik Video Sub Indo...</p>
                     </div>
                 </div>
 
-                <!-- EPISODES & METADATA -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
                     <div class="lg:col-span-2 glass p-4 md:p-5 rounded-2xl md:rounded-3xl border border-navy-800 space-y-3">
                         <div class="flex flex-wrap justify-between items-center border-b border-navy-800 pb-2.5 gap-2">
@@ -169,7 +207,6 @@
                                 <i class="fa-solid fa-list-ol text-accent-cyan"></i> Pilih Episode
                             </h4>
                         </div>
-                        <!-- GRID EPISODE -->
                         <div id="watch-episodes-list" class="flex flex-col gap-2 max-h-56 overflow-y-auto pr-1"></div>
                     </div>
 
@@ -194,14 +231,16 @@
     </main>
 
     <script>
-        // API Base ke Express backend lokal lu (sesuai port server.js)
         const API_URL = '/api'; 
         let currentAnimeData = null;
         let currentEpisodeId = null;
         let bookmarks = JSON.parse(localStorage.getItem('riznetic_bookmarks') || '[]');
 
+        const GENRE_LIST = ['action', 'adventure', 'comedy', 'demons', 'drama', 'ecchi', 'fantasy', 'game', 'harem', 'historical', 'horror', 'isekai', 'josei', 'magic', 'martial-arts', 'mecha', 'military', 'music', 'mystery', 'psychological', 'romance', 'school', 'sci-fi', 'seinen', 'shoujo', 'shounen', 'slice-of-life', 'sports', 'supernatural', 'thriller'];
+
         document.addEventListener('DOMContentLoaded', () => {
             loadHomePage();
+            renderGenreButtons();
         });
 
         function showPage(page) {
@@ -210,6 +249,7 @@
             if (activeBtn) activeBtn.classList.add('text-accent-cyan');
 
             document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-genre').classList.add('hidden');
             document.getElementById('view-grid').classList.add('hidden');
             document.getElementById('view-watch').classList.add('hidden');
 
@@ -219,6 +259,17 @@
 
             if (page === 'home') {
                 document.getElementById('view-home').classList.remove('hidden');
+            } else if (page === 'genre') {
+                document.getElementById('view-genre').classList.remove('hidden');
+                selectGenre('action');
+            } else if (page === 'popular') {
+                document.getElementById('view-grid').classList.remove('hidden');
+                document.getElementById('grid-page-title').innerText = 'Anime Terpopuler / Tamat';
+                loadPopularGrid();
+            } else if (page === 'latest') {
+                document.getElementById('view-grid').classList.remove('hidden');
+                document.getElementById('grid-page-title').innerText = 'Rilis Episode Terbaru';
+                loadLatestGrid();
             } else if (page === 'bookmarks') {
                 document.getElementById('view-grid').classList.remove('hidden');
                 document.getElementById('grid-page-title').innerText = 'Favorit Saya';
@@ -228,15 +279,40 @@
             }
         }
 
+        function renderGenreButtons() {
+            const container = document.getElementById('genre-buttons-grid');
+            container.innerHTML = GENRE_LIST.map(g => `
+                <button onclick="selectGenre('${g}')" class="bg-navy-900 hover:bg-accent-cyan hover:text-black text-gray-300 font-bold p-2 rounded-xl border border-navy-800 transition text-xs text-center capitalize">
+                    ${g.replace('-', ' ')}
+                </button>
+            `).join('');
+        }
+
+        async function selectGenre(genreName) {
+            document.getElementById('genre-title-display').innerText = `Genre: ${genreName.toUpperCase()}`;
+            document.getElementById('genre-container').innerHTML = `<div class="col-span-full text-center text-accent-cyan py-8">Memuat Genre ${genreName}...</div>`;
+
+            try {
+                const res = await fetch(`${API_URL}/genre/${genreName}`);
+                const data = await res.json();
+                renderCards('genre-container', data);
+            } catch (e) {
+                document.getElementById('genre-container').innerHTML = `<p class="col-span-full text-center text-red-400 py-8">Gagal memuat genre.</p>`;
+            }
+        }
+
         async function loadHomePage() {
             document.getElementById('loading-spinner').classList.remove('hidden');
             try {
                 const res = await fetch(`${API_URL}/home`);
-                const list = await res.json();
+                const data = await res.json();
                 
-                if (list && list.length > 0) {
-                    setupHero(list[0]);
-                    renderCards('grid-latest', list);
+                if (data.ongoing && data.ongoing.length > 0) {
+                    setupHero(data.ongoing[0]);
+                    renderCards('grid-latest', data.ongoing);
+                }
+                if (data.popular && data.popular.length > 0) {
+                    renderCards('grid-popular', data.popular);
                 }
             } catch (err) {
                 console.error("Gagal load home:", err);
@@ -245,8 +321,29 @@
             showPage('home');
         }
 
+        async function loadPopularGrid() {
+            document.getElementById('grid-container').innerHTML = `<div class="col-span-full py-12 text-center text-accent-cyan">Memuat Anime Populer...</div>`;
+            try {
+                const res = await fetch(`${API_URL}/popular`);
+                const data = await res.json();
+                renderCards('grid-container', data);
+            } catch (e) {
+                document.getElementById('grid-container').innerHTML = `<p class="col-span-full text-center text-red-400 py-8">Gagal memuat data.</p>`;
+            }
+        }
+
+        async function loadLatestGrid() {
+            document.getElementById('grid-container').innerHTML = `<div class="col-span-full py-12 text-center text-accent-cyan">Memuat Episode Terbaru...</div>`;
+            try {
+                const res = await fetch(`${API_URL}/latest`);
+                const data = await res.json();
+                renderCards('grid-container', data);
+            } catch (e) {
+                document.getElementById('grid-container').innerHTML = `<p class="col-span-full text-center text-red-400 py-8">Gagal memuat data.</p>`;
+            }
+        }
+
         function setupHero(anime) {
-            document.getElementById('hero-section').classList.remove('hidden');
             document.getElementById('hero-bg').style.backgroundImage = `url('${anime.cover}')`;
             document.getElementById('hero-title').innerText = anime.title;
             document.getElementById('hero-status').innerText = anime.episodes;
@@ -273,7 +370,6 @@
             `).join('');
         }
 
-        // FUNGSI BARU: Get Detail dari Server Scraper (Narik list episode aktual)
         async function getAnimeDetail(slugId, coverImg) {
             showPage('watch');
             document.getElementById('main-container').scrollTo({ top: 0, behavior: 'smooth' });
@@ -281,15 +377,15 @@
             document.getElementById('watch-anime-title').innerText = "Memuat Detail Anime...";
             document.getElementById('watch-iframe').classList.add('hidden');
             document.getElementById('player-loading').classList.remove('hidden');
-            document.getElementById('watch-episodes-list').innerHTML = `<p class="text-xs text-accent-cyan p-2">Menarik data dari server lokal...</p>`;
+            document.getElementById('watch-episodes-list').innerHTML = `<p class="text-xs text-accent-cyan p-2">Menarik data dari server...</p>`;
 
             try {
                 const res = await fetch(`${API_URL}/anime/${slugId}`);
                 const detail = await res.json();
                 
-                if(detail) {
+                if (detail) {
                     currentAnimeData = detail;
-                    currentAnimeData.cover = coverImg; // keep the cover image reference
+                    currentAnimeData.cover = coverImg;
                     
                     document.getElementById('watch-anime-title').innerText = detail.title;
                     document.getElementById('watch-status').innerText = detail.status || 'Ongoing';
@@ -297,10 +393,8 @@
                     document.getElementById('watch-genres').innerText = detail.genres || 'Anime';
                     document.getElementById('watch-synopsis').innerText = detail.synopsis || 'Sinopsis tidak tersedia.';
 
-                    // Render episode list
                     let epHtml = '';
                     if (detail.episodes && detail.episodes.length > 0) {
-                        // Reverse agar episode awal di atas (atau sesuaikan dengan urutan web scraping)
                         detail.episodes.forEach((ep) => {
                             epHtml += `
                                 <button id="btn-${ep.id}" onclick="playEpisode('${ep.id}', '${ep.title}')" class="watch-ep-btn w-full text-left bg-navy-800 text-gray-300 hover:bg-navy-700 rounded-lg px-4 py-2.5 text-xs font-bold transition flex items-center justify-between border border-navy-700">
@@ -308,8 +402,6 @@
                                 </button>
                             `;
                         });
-                        
-                        // Auto play the first one in the list (usually newest depending on site)
                         playEpisode(detail.episodes[0].id, detail.episodes[0].title);
                     } else {
                         epHtml = `<p class="text-xs text-gray-400 p-2">Episode belum tersedia.</p>`;
@@ -318,9 +410,9 @@
                     document.getElementById('watch-episodes-list').innerHTML = epHtml;
                     updateBookmarkButtonState();
                 }
-            } catch(e) {
+            } catch (e) {
                 document.getElementById('watch-anime-title').innerText = "Gagal memuat anime.";
-                document.getElementById('player-loading').innerText = "Gagal menghubungi server backend.";
+                document.getElementById('player-loading').innerText = "Gagal menghubungi server.";
             }
         }
 
@@ -328,12 +420,11 @@
             currentEpisodeId = epId;
             document.getElementById('watch-anime-title').innerText = epTitle;
             
-            // UI Button Active State
             document.querySelectorAll('.watch-ep-btn').forEach(btn => {
                 btn.className = "watch-ep-btn w-full text-left bg-navy-800 text-gray-300 hover:bg-navy-700 rounded-lg px-4 py-2.5 text-xs font-bold transition flex items-center justify-between border border-navy-700";
             });
             const activeBtn = document.getElementById(`btn-${epId}`);
-            if(activeBtn) {
+            if (activeBtn) {
                 activeBtn.className = "watch-ep-btn w-full text-left bg-accent-cyan text-black rounded-lg px-4 py-2.5 text-xs font-extrabold transition flex items-center justify-between shadow-lg";
             }
 
@@ -345,7 +436,7 @@
                 const res = await fetch(`${API_URL}/watch/${epId}`);
                 const data = await res.json();
                 
-                if(data && data.streamUrl) {
+                if (data && data.streamUrl) {
                     const iframe = document.getElementById('watch-iframe');
                     iframe.src = data.streamUrl;
                     document.getElementById('direct-stream-link').href = data.streamUrl;
@@ -357,7 +448,7 @@
                 } else {
                     document.getElementById('player-loading').innerText = "Video tidak ditemukan di server target.";
                 }
-            } catch(e) {
+            } catch (e) {
                 document.getElementById('player-loading').innerText = "Error saat menarik video.";
             }
         }
@@ -375,7 +466,7 @@
                 const res = await fetch(`${API_URL}/search?q=${encodeURIComponent(q)}`);
                 const data = await res.json();
                 renderCards('grid-container', data);
-            } catch(e) {
+            } catch (e) {
                 document.getElementById('grid-container').innerHTML = `<p class="col-span-full text-center text-red-400 py-8">Gagal melakukan pencarian.</p>`;
             }
         }
