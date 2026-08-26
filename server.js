@@ -7,43 +7,70 @@ const app = express();
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Konfigurasi
-const API_BASE = 'https://api.jikan.moe/v4';
-const PROXY_URL = 'https://api.allorigins.win/raw?url=';
+// ===== ANILIST API (Ga Pernah Blokir) =====
+const ANILIST_API = 'https://graphql.anilist.co';
 
-// Helper fetch dengan auto fallback ke proxy
-async function fetchWithProxy(url) {
+// Query untuk cari anime
+const SEARCH_QUERY = `
+query ($search: String, $page: Int) {
+  Page(page: $page, perPage: 24) {
+    media(search: $search, type: ANIME, sort: POPULARITY_DESC) {
+      id
+      title { romaji english native }
+      coverImage { large }
+      episodes
+      averageScore
+      status
+      genres
+      description
+      seasonYear
+    }
+  }
+}`;
+
+// Query untuk detail
+const DETAIL_QUERY = `
+query ($id: Int) {
+  Media(id: $id, type: ANIME) {
+    id
+    title { romaji english native }
+    coverImage { large }
+    episodes
+    averageScore
+    status
+    genres
+    description
+    seasonYear
+  }
+}`;
+
+// Helper fetch AniList
+async function fetchAniList(query, variables = {}) {
     try {
-        // Coba langsung dulu
-        const response = await axios.get(url, { 
-            timeout: 5000,
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            }
+        const response = await axios.post(ANILIST_API, { query, variables }, {
+            timeout: 8000,
+            headers: { 'Content-Type': 'application/json' }
         });
-        return response.data;
-    } catch (error) {
-        console.log('Direct fetch failed, using proxy...');
-        // Fallback ke proxy
-        const proxyResponse = await axios.get(`${PROXY_URL}${encodeURIComponent(url)}`, { 
-            timeout: 10000 
-        });
-        return proxyResponse.data;
+        return response.data.data;
+    } catch (e) {
+        console.error('AniList Error:', e.message);
+        return null;
     }
 }
 
-// Transform data anime ke format RIZNETIC
+// Transform ke format RIZNETIC
 function transformAnime(item) {
+    const title = item.title?.romaji || item.title?.english || item.title?.native || 'Unknown';
     return {
-        id: item.mal_id?.toString() || '0',
-        title: item.title_japanese || item.title || 'Unknown',
-        englishTitle: item.title || '',
-        cover: item.images?.jpg?.large_image_url || item.images?.jpg?.image_url || '',
+        id: item.id.toString(),
+        title: title,
+        englishTitle: item.title?.english || title,
+        cover: item.coverImage?.large || '',
         episodes: item.episodes ? `Ep ${item.episodes}` : 'Ongoing',
-        score: item.score ? item.score.toString() : 'N/A',
+        score: item.averageScore ? (item.averageScore / 10).toFixed(1) : 'N/A',
         status: item.status || 'Ongoing',
-        genres: item.genres ? item.genres.map(g => g.name).join(', ') : 'Anime',
-        synopsis: item.synopsis || 'Sinopsis tidak tersedia.'
+        genres: item.genres ? item.genres.join(', ') : 'Anime',
+        synopsis: item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 500) : 'Sinopsis tidak tersedia.'
     };
 }
 
@@ -53,11 +80,12 @@ function transformAnime(item) {
 app.get('/api/home', async (req, res) => {
     try {
         const [latestData, popularData] = await Promise.all([
-            fetchWithProxy(`${API_BASE}/seasons/now?limit=12`),
-            fetchWithProxy(`${API_BASE}/top/anime?limit=12`)
+            fetchAniList(SEARCH_QUERY, { search: '', page: 1 }),
+            fetchAniList(SEARCH_QUERY, { search: '', page: 2 })
         ]);
-        const ongoing = (latestData.data || []).map(transformAnime);
-        const popular = (popularData.data || []).map(transformAnime);
+        
+        const ongoing = (latestData?.Page?.media || []).map(transformAnime);
+        const popular = (popularData?.Page?.media || []).map(transformAnime);
         res.json({ ongoing, popular });
     } catch (e) {
         res.json({ ongoing: [], popular: [] });
@@ -67,8 +95,8 @@ app.get('/api/home', async (req, res) => {
 // 2. Latest
 app.get('/api/latest', async (req, res) => {
     try {
-        const data = await fetchWithProxy(`${API_BASE}/seasons/now?limit=24`);
-        res.json((data.data || []).map(transformAnime));
+        const data = await fetchAniList(SEARCH_QUERY, { search: '', page: 1 });
+        res.json((data?.Page?.media || []).map(transformAnime));
     } catch (e) {
         res.json([]);
     }
@@ -77,8 +105,8 @@ app.get('/api/latest', async (req, res) => {
 // 3. Popular
 app.get('/api/popular', async (req, res) => {
     try {
-        const data = await fetchWithProxy(`${API_BASE}/top/anime?limit=24`);
-        res.json((data.data || []).map(transformAnime));
+        const data = await fetchAniList(SEARCH_QUERY, { search: '', page: 2 });
+        res.json((data?.Page?.media || []).map(transformAnime));
     } catch (e) {
         res.json([]);
     }
@@ -87,8 +115,8 @@ app.get('/api/popular', async (req, res) => {
 // 4. Genre
 app.get('/api/genre/:name', async (req, res) => {
     try {
-        const data = await fetchWithProxy(`${API_BASE}/anime?q=${encodeURIComponent(req.params.name)}&limit=24`);
-        res.json((data.data || []).map(transformAnime));
+        const data = await fetchAniList(SEARCH_QUERY, { search: req.params.name, page: 1 });
+        res.json((data?.Page?.media || []).map(transformAnime));
     } catch (e) {
         res.json([]);
     }
@@ -99,27 +127,27 @@ app.get('/api/search', async (req, res) => {
     const q = req.query.q;
     if (!q) return res.json([]);
     try {
-        const data = await fetchWithProxy(`${API_BASE}/anime?q=${encodeURIComponent(q)}&limit=24`);
-        res.json((data.data || []).map(transformAnime));
+        const data = await fetchAniList(SEARCH_QUERY, { search: q, page: 1 });
+        res.json((data?.Page?.media || []).map(transformAnime));
     } catch (e) {
         res.json([]);
     }
 });
 
-// 6. Detail Anime + Episode List (SUB INDO)
+// 6. Detail + Episode
 app.get('/api/anime/:id', async (req, res) => {
     try {
-        const data = await fetchWithProxy(`${API_BASE}/anime/${req.params.id}`);
-        const item = data.data;
+        const data = await fetchAniList(DETAIL_QUERY, { id: parseInt(req.params.id) });
+        const item = data?.Media;
         if (!item) return res.status(404).json(null);
         
         const detail = transformAnime(item);
-        const epCount = typeof item.episodes === 'number' && item.episodes > 0 ? item.episodes : 12;
+        const epCount = item.episodes || 12;
         const episodes = [];
         for (let i = 1; i <= Math.min(epCount, 50); i++) {
             episodes.push({
-                id: `${item.mal_id}-${i}`,
-                title: `Episode ${i} (Sub Indo)` // SUB INDO di sini
+                id: `${item.id}-${i}`,
+                title: `Episode ${i} (Sub Indo)`
             });
         }
         detail.episodes = episodes;
@@ -129,7 +157,7 @@ app.get('/api/anime/:id', async (req, res) => {
     }
 });
 
-// 7. Video Stream (SUB INDO Player)
+// 7. Video Stream (SUB INDO)
 app.get('/api/watch/:epId', (req, res) => {
     const parts = req.params.epId.split('-');
     const malId = parts[0];
@@ -139,8 +167,7 @@ app.get('/api/watch/:epId', (req, res) => {
     const sources = [
         `https://vidsrc.cc/v2/embed/anime/${malId}/${epNum}`,
         `https://vidsrc.net/embed/anime/${malId}/${epNum}`,
-        `https://embed.su/embed/anime/${malId}/${epNum}`,
-        `https://gogoanime.gg/${malId}-episode-${epNum}` // Fallback
+        `https://embed.su/embed/anime/${malId}/${epNum}`
     ];
     
     res.json({ 
@@ -149,10 +176,9 @@ app.get('/api/watch/:epId', (req, res) => {
     });
 });
 
-// Start server
 if (process.env.NODE_ENV !== 'production') {
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => console.log(`🔥 RIZNETIC SUB INDO running on port ${PORT}`));
+    app.listen(PORT, () => console.log(`🔥 RIZNETIC running on port ${PORT}`));
 }
 
 module.exports = app;
